@@ -1,0 +1,20 @@
+# Biến môi trường (Chứa mật khẩu DB, Secret Key...)
+.env
+
+# Dữ liệu thực tế của Database và Storage (Rất nặng và bảo mật)
+c3-db/data/
+c5-storage/data/
+
+# Python (Dành cho c2-app)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Logs của hệ thống
+*.log
+
+# File tạm của hệ điều hành
+.DS_Store
+Thumbs.db
