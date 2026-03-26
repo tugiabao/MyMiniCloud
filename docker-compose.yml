@@ -1,0 +1,69 @@
+services:
+  # --- Container c1: Web Server (Frontend) ---
+  c1:
+    build:
+      context: ./c1-web
+      dockerfile: Dockerfile
+    container_name: c1
+    restart: always
+    ports:
+      - "${WEB_PORT}:80"
+    networks:
+      - cloud-net
+    depends_on:
+      - c2
+  # --- Container c2: Application Server ---
+  c2:
+    build:
+      context: ./c2-app
+      dockerfile: Dockerfile
+    container_name: c2
+    restart: always
+    environment:
+      # Lắp ráp URL linh hoạt từ .env
+      DATABASE_URL: ${DB_DRIVER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+      FLASK_APP: ${FLASK_APP}
+    depends_on:
+      - c3
+    volumes:
+      - ./c2-app:/app
+    command: python main.py
+    networks:
+      - cloud-net
+    ports:
+      - "${APP_PORT}:8000"
+
+  # --- Container c3: Database Server ---
+  c3:
+    image: ${DB_IMAGE}
+    container_name: c3
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./c3-db/data:/var/lib/postgresql/data
+    networks:
+      - cloud-net
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+  # --- c9: Cổng chào duy nhất ---
+  c9:
+    build: ./c9-proxy
+    container_name: c9
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - cloud-net
+    depends_on:
+      - c1
+      - c2
+
+# --- Khởi tạo mạng nội bộ ---
+networks:
+  cloud-net:
+    name: ${NETWORK_NAME}
+    driver: bridge

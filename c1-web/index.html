@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyMiniCloud Dashboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .status { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>MyMiniCloud Dashboard</h1>
+        <p>Status: <span id="status" class="status">Loading...</span></p>
+        <p>Container ID: <span id="container-id">...</span></p>
+        <hr>
+        <h3>User List:</h3>
+        <ul id="user-list"></ul>
+    </div>
+
+    <script>
+        // Gọi API từ c2 thông qua Proxy của Nginx hoặc trực tiếp
+        async function fetchData() {
+            try {
+                // Gọi endpoint '/' của c2
+                const infoRes = await fetch('/api/');
+                const info = await infoRes.json();
+                document.getElementById('status').innerText = info.status;
+                document.getElementById('container-id').innerText = info.container_id;
+
+                // Gọi endpoint '/users' của c2
+                const usersRes = await fetch('/api/users');
+                const users = await usersRes.json();
+                const list = document.getElementById('user-list');
+                users.forEach(u => {
+                    const li = document.createElement('li');
+                    li.textContent = `${u.username} (ID: ${u.id})`;
+                    list.appendChild(li);
+                });
+            } catch (err) {
+                document.getElementById('status').innerText = "Error connecting to Backend";
+                console.error(err);
+            }
+        }
+        fetchData();
+    </script>
+</body>
+</html>

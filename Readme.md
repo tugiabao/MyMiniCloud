@@ -44,7 +44,7 @@ Dự án được chia thành 3 nhóm chức năng chính, kết nối thông qu
 ### 2. Khởi chạy hệ thống
 1.  Clone dự án:
     ```bash
-    git clone <url-cua-ban>
+    git clone https://github.com/tugiabao/MyMiniCloud.git
     cd MyMiniCloud
     ```
 2.  Cấu hình biến môi trường:

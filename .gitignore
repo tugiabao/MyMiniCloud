@@ -18,3 +18,4 @@ venv/
 # File tạm của hệ điều hành
 .DS_Store
 Thumbs.db
+clean.bat
