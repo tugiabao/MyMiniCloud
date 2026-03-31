@@ -1,0 +1,38 @@
+acl "trusted" {
+        127.0.0.0/8;      # Localhost
+        172.19.0.0/16;    # Toàn bộ dải subnet cloud-net của bạn
+        localhost;
+        localnets;
+};
+
+options {
+        directory "/var/cache/bind";
+
+        # --- QUYỀN TRUY CẬP ---
+        recursion yes;
+        allow-query { trusted; };
+        allow-query-cache { trusted; }; # Cho phép truy cập bộ nhớ đệm DNS
+        allow-recursion { trusted; };   # Chỉ cho phép các container trong mạng hỏi DNS
+
+        # --- CHUYỂN TIẾP (FORWARDERS) ---
+        # Thêm Cloudflare (1.1.1.1) làm dự phòng vì Google đôi khi bị timeout trong Docker
+        forwarders {
+                8.8.8.8;
+                8.8.4.4;
+                1.1.1.1;
+                1.0.0.1;
+        };
+
+        # --- BẢO MẬT & HIỆU SUẤT ---
+        dnssec-validation auto;
+        
+        # Ngăn chặn việc hỏi các zone root không cần thiết (giảm lag)
+        empty-zones-enable yes;
+
+        # --- GIAO THỨC MẠNG ---
+        listen-on { any; };
+        listen-on-v6 { none; }; # Giữ nguyên: Tắt IPv6 để tránh lỗi "network unreachable"
+
+        # Ép BIND chỉ phản hồi kết quả IPv4 (rất quan trọng cho mạng Docker nội bộ)
+        # filter-aaaa-on-v4 yes;
+};

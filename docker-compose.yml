@@ -1,69 +1,177 @@
 services:
-  # --- Container c1: Web Server (Frontend) ---
+  # --- c6: DNS Server ---
+  c6:
+    build: ./c6-dns
+    container_name: c6
+    restart: always
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - IP_C1=${IP_C1}
+      - IP_C2=${IP_C2}
+      - IP_C3=${IP_C3}
+      - IP_C4=${IP_C4}
+      - IP_C5=${IP_C5}
+      - IP_C6=${IP_C6}
+      - IP_C7=${IP_C7}
+      - IP_C8=${IP_C8}
+      - IP_C9=${IP_C9}
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C6}"
+    healthcheck:
+      # Lệnh này kiểm tra xem DNS có thực sự trả lời hay chưa
+      test: [ "CMD", "nslookup", "localhost", "127.0.0.1" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # --- c1: Web Server ---
   c1:
-    build:
-      context: ./c1-web
-      dockerfile: Dockerfile
+    build: ./c1-web
     container_name: c1
     restart: always
-    ports:
-      - "${WEB_PORT}:80"
     networks:
-      - cloud-net
+      cloud-net:
+        ipv4_address: "${IP_C1}"
+    dns:
+      - "${IP_C6}"
     depends_on:
-      - c2
-  # --- Container c2: Application Server ---
+      - c6
+
+  # --- c2: Application Server ---
   c2:
-    build:
-      context: ./c2-app
-      dockerfile: Dockerfile
+    build: ./c2-app
     container_name: c2
     restart: always
     environment:
-      # Lắp ráp URL linh hoạt từ .env
-      DATABASE_URL: ${DB_DRIVER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
-      SECRET_KEY: ${SECRET_KEY}
-      FLASK_APP: ${FLASK_APP}
-    depends_on:
-      - c3
+      DATABASE_URL: "${DB_DRIVER}://${DB_USER}:${DB_PASSWORD}@c3.${DOMAIN_NAME}:${DB_PORT}/${DB_NAME}"
+      SECRET_KEY: "${SECRET_KEY}"
+      FLASK_APP: "${FLASK_APP}"
+      TZ: "${TIMEZONE}"
     volumes:
       - ./c2-app:/app
-    command: python main.py
     networks:
-      - cloud-net
-    ports:
-      - "${APP_PORT}:8000"
+      cloud-net:
+        ipv4_address: "${IP_C2}"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      - c3
+      - c6
 
-  # --- Container c3: Database Server ---
+  # --- c3: Database Server ---
   c3:
-    image: ${DB_IMAGE}
+    image: "${DB_IMAGE}"
     container_name: c3
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+      TZ: "${TIMEZONE}"
     volumes:
       - ./c3-db/data:/var/lib/postgresql/data
     networks:
-      - cloud-net
+      cloud-net:
+        ipv4_address: "${IP_C3}"
+
+  # --- c4: Authentication Server ---
+  c4:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: c4
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: "${AUTH_ADMIN}"
+      KC_BOOTSTRAP_ADMIN_PASSWORD: "${AUTH_PASSWORD}"
+      KC_PROXY_HEADERS: "xforwarded" # Phiên bản Keycloak mới bắt buộc dùng tham số này để nhận diện X-Forwarded-Proto từ Nginx
+      KC_HOSTNAME: "auth.azura.io.vn" # Thay vì .local để bắt buộc Keycloak dùng Public Domain
+      KC_HTTP_ENABLED: "true"
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C4}"
+    dns:
+      - "${IP_C6}"
+
+ # --- c5: Object Storage (Kho lưu trữ chung cho SA) ---
+  c5:
+    image: minio/minio
+    container_name: c5
+    restart: always
+    volumes:
+      - ./c5-storage/data:/data
+    environment:
+      MINIO_ROOT_USER: "${STORAGE_USER}"
+      MINIO_ROOT_PASSWORD: "${STORAGE_PASSWORD}"
+      # Quan trọng: Giúp MinIO Console hoạt động đúng khi qua Reverse Proxy/Cloudflare
+      MINIO_BROWSER_REDIRECT_URL: "https://storage.azura.io.vn"
+    # Tách biệt: API chạy cổng 9000, Console chạy cổng 9001 (STORAGE_PORT_CONSOLE nên là 9001)
+    command: server /data --console-address ":9001" --address ":9000"
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C5}"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      c6:
+        condition: service_healthy
+  # --- c7: Monitoring Server ---
+  c7:
+    image: prom/prometheus
+    container_name: c7
+    volumes:
+      - ./c7-monitor/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C7}"
+    dns:
+      - "${IP_C6}"
+
+  # --- c8: Logging Server ---
+  c8:
+    image: grafana/grafana
+    container_name: c8
     ports:
-      - "${DB_PORT}:${DB_PORT}"
-  # --- c9: Cổng chào duy nhất ---
+      - "${GRAFANA_PORT_HOST}:3000"
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C8}"
+    dns:
+      - "${IP_C6}"
+
+  # --- c9: Reverse Proxy ---
   c9:
     build: ./c9-proxy
     container_name: c9
     restart: always
+    environment:
+      - IP_C6=${IP_C6}
     ports:
-      - "8080:80"
+      - "80:80"
     networks:
-      - cloud-net
+      cloud-net:
+        ipv4_address: "${IP_C9}"
+    dns:
+      - "${IP_C6}"
     depends_on:
       - c1
       - c2
-
-# --- Khởi tạo mạng nội bộ ---
+      - c4
+      - c5
+      - c8
+  c10:
+    image: cloudflare/cloudflared:latest
+    container_name: c10
+    restart: always
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C10}"
 networks:
   cloud-net:
-    name: ${NETWORK_NAME}
+    name: "${NETWORK_NAME}"
     driver: bridge
+    ipam:
+      config:
+        - subnet: "${SUBNET_RANGE}"
