@@ -1,0 +1,4 @@
+zone "myminicloud.local" {
+    type master;
+    file "/etc/bind/db.myminicloud.local";
+};
