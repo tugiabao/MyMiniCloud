@@ -24,7 +24,16 @@
             <p>Email: <span id="user-email"></span></p>
             <hr>
             <button onclick="keycloak.logout()" class="btn-logout">Đăng xuất</button>
-            <button class="btn-upload" title="Sẽ triển khai ở bước c5">Tải ảnh hồ cá lên Cloud (c5)</button>
+            <br><br>
+            <!-- Khu vực tải file -->
+            <div style="background: #e1f5fe; padding: 15px; border-radius: 8px;">
+                <h4 style="margin-top: 0;">Gửi ảnh lên Cloud Storage</h4>
+                <input type="file" id="file-input" accept="image/*" style="margin-bottom: 10px;">
+                <br>
+                <button id="upload-btn" class="btn-upload" style="cursor: pointer; opacity: 1;">🚀 Tải ảnh lên C5 Thử Nghiệm</button>
+                <p id="upload-status" style="font-size: 0.9em; font-weight: bold;"></p>
+                <img id="preview-img" src="" style="max-width: 100%; height: auto; display: none; margin-top: 10px; border-radius: 5px;" />
+            </div>
         </div>
     </div>
 
@@ -56,6 +65,62 @@
             console.error("LỖI INIT KEYCLOAK CHI TIẾT:", err);
             document.getElementById('auth-status').innerText = "❌ Lỗi xác thực. Hãy mở F12 -> Console để xem chi tiết lõi đỏ!";
         });
+
+        // --- BẮT ĐẦU LOGIC UPLOAD HÌNH ẢNH LÊN S3 ---
+        document.getElementById('upload-btn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('file-input');
+            const statusText = document.getElementById('upload-status');
+            const previewImg = document.getElementById('preview-img');
+
+            if (!fileInput.files.length) {
+                statusText.innerText = "Vui lòng chọn 1 ảnh!";
+                statusText.style.color = "red";
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const bucketName = "aquarium-data"; // Bucket mẫu mà bạn vừa thao tác
+            
+            // Xóa dấu tiếng Việt, ký tự lạ để làm tên an toàn
+            const safeFileName = Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9.\-]/g, "_");
+            const minioApiUrl = `https://api-storage.azura.io.vn/${bucketName}/${safeFileName}`;
+
+            statusText.innerText = "⏳ Đang tải lên Lõi C5...";
+            statusText.style.color = "blue";
+            previewImg.style.display = "none";
+
+            try {
+                // MinIO S3 bản thân nó chấp nhận mã Keycloak JWT như một lệnh PUT hợp lệ 
+                // (nếu đã cấu hình Identity Providers OpenID)
+                const response = await fetch(minioApiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${keycloak.token}`,
+                        'Content-Type': file.type
+                    },
+                    body: file
+                });
+
+                if (response.ok) {
+                    statusText.innerText = `✅ Tải lên thành công! File lưu tại: ${safeFileName}`;
+                    statusText.style.color = "green";
+                    
+                    // Hiện ảnh demo (Nếu Bucket public read thì url này sẽ xem được)
+                    previewImg.src = minioApiUrl;
+                    previewImg.style.display = "block";
+                } else {
+                    const errMsg = await response.text();
+                    console.error("Lỗi từ MinIO:", errMsg);
+                    statusText.innerText = `❌ Lỗi tải lên: Bị chặn quyền hoặc Bucket không đúng. (Mã: ${response.status})`;
+                    statusText.style.color = "red";
+                }
+            } catch (error) {
+                console.error("Lỗi kết nối:", error);
+                statusText.innerText = `❌ Không thể đẩy tới Storage API (Lỗi mạng HTTPS - F12 để xem)`;
+                statusText.style.color = "red";
+            }
+        });
+        // --- KẾT THÚC LOGIC UPLOAD ---
     </script>
 </body>
 </html>
