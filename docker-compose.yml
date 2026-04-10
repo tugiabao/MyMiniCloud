@@ -25,10 +25,13 @@ services:
       timeout: 3s
       retries: 5
 
-  # --- c1: Web Server ---
-  c1:
-    build: ./c1-web
-    container_name: c1
+  # --- c1-sa-web: Web Server (React + Vite, Smart Aquarium Frontend) ---
+  c1-sa-web:
+    build:
+      context: ./c1-sa-web
+      args:
+        VITE_API_URL: https://api-be.azura.io.vn
+    container_name: c1-sa-web
     restart: always
     networks:
       cloud-net:
@@ -38,25 +41,23 @@ services:
     depends_on:
       - c6
 
-  # --- c2: Application Server ---
-  c2:
-    build: ./c2-app
-    container_name: c2
+  # --- c2-sa-api: Application Server (NestJS, Smart Aquarium Backend) ---
+  c2-sa-api:
+    build: ./c2-sa-api
+    container_name: c2-sa-api
     restart: always
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: "${DB_DRIVER}://${DB_USER}:${DB_PASSWORD}@c3.${DOMAIN_NAME}:${DB_PORT}/${DB_NAME}"
-      SECRET_KEY: "${SECRET_KEY}"
-      FLASK_APP: "${FLASK_APP}"
-      TZ: "${TIMEZONE}"
-    volumes:
-      - ./c2-app:/app
+      - NODE_OPTIONS=--dns-result-order=ipv4first
+      - TZ=Asia/Ho_Chi_Minh
+      - PORT_BACKEND=3000
     networks:
       cloud-net:
         ipv4_address: "${IP_C2}"
     dns:
       - "${IP_C6}"
     depends_on:
-      - c3
       - c6
 
   # --- c3: Database Server ---
@@ -65,9 +66,9 @@ services:
     container_name: c3
     restart: always
     environment:
-      POSTGRES_USER: "${DB_USER}"
-      POSTGRES_PASSWORD: "${DB_PASSWORD}"
-      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "mysecretpassword"
+      POSTGRES_DB: "myminicloud_db"
       TZ: "${TIMEZONE}"
     volumes:
       - ./c3-db/data:/var/lib/postgresql/data
@@ -75,17 +76,41 @@ services:
       cloud-net:
         ipv4_address: "${IP_C3}"
 
+  # --- c3-dbview: Database GUI (CloudBeaver by DBeaver, bật khi cần) ---
+  c3-dbview:
+    image: dbeaver/cloudbeaver:latest
+    container_name: c3-dbview
+    restart: "no"
+    profiles:
+      - tools
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./c3-dbview/data:/opt/cloudbeaver/workspace
+    networks:
+      cloud-net:
+        ipv4_address: 172.19.0.13
+    dns:
+      - "${IP_C6}"
+
+
   # --- c4: Authentication Server ---
   c4:
     image: quay.io/keycloak/keycloak:latest
     container_name: c4
     command: start-dev
     environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://c3:5432/myminicloud_db
+      KC_DB_USERNAME: "admin"
+      KC_DB_PASSWORD: "mysecretpassword"
       KC_BOOTSTRAP_ADMIN_USERNAME: "${AUTH_ADMIN}"
       KC_BOOTSTRAP_ADMIN_PASSWORD: "${AUTH_PASSWORD}"
       KC_PROXY_HEADERS: "xforwarded" # Phiên bản Keycloak mới bắt buộc dùng tham số này để nhận diện X-Forwarded-Proto từ Nginx
       KC_HOSTNAME: "auth.azura.io.vn" # Thay vì .local để bắt buộc Keycloak dùng Public Domain
       KC_HTTP_ENABLED: "true"
+    depends_on:
+      - c3
     networks:
       cloud-net:
         ipv4_address: "${IP_C4}"
@@ -167,8 +192,8 @@ services:
     dns:
       - "${IP_C6}"
     depends_on:
-      - c1
-      - c2
+      - c1-sa-web
+      - c2-sa-api
       - c4
       - c5
       - c8
@@ -178,7 +203,7 @@ services:
     restart: always
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    command: tunnel --no-autoupdate run
+    command: tunnel --no-autoupdate --protocol http2 run
     networks:
       cloud-net:
         ipv4_address: "${IP_C10}"

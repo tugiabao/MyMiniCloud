@@ -10,8 +10,8 @@ $TTL 604800
 ns      IN      A       ${IP_C6}
 
 ; Ánh xạ Container
-c1      IN      A       ${IP_C1}
-c2      IN      A       ${IP_C2}
+c1-sa-web      IN      A       ${IP_C1}
+c2-sa-api      IN      A       ${IP_C2}
 c3      IN      A       ${IP_C3}
 c4      IN      A       ${IP_C4}
 c5      IN      A       ${IP_C5}
@@ -21,8 +21,8 @@ c8      IN      A       ${IP_C8}
 c9      IN      A       ${IP_C9}
 
 ; THÊM CÁC DÒNG NÀY ĐỂ nslookup db.myminicloud.local HOẠT ĐỘNG
-web     IN      CNAME   c1
-api     IN      CNAME   c2
+web     IN      CNAME   c1-sa-web
+api     IN      CNAME   c2-sa-api
 db      IN      CNAME   c3
 auth    IN      CNAME   c4
 storage IN      CNAME   c5

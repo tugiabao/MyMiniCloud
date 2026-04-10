@@ -1,0 +1,124 @@
+📘 TÀI LIỆU API HỆ THỐNG SMART AQUARIUM
+
+1. XÁC THỰC NGƯỜI DÙNG (/auth)
+--------------------------------------------------------------------------------
+- POST /auth/register
+  Mô tả: Đăng ký tài khoản mới.
+  Tham số (Body): email, password, fullName, phone, address, gender, birthday.
+  Phản hồi: { "message": "...", "user": { ... } }
+
+- POST /auth/login
+  Mô tả: Đăng nhập hệ thống để lấy Token.
+  Tham số (Body): email, password.
+  Phản hồi: { "accessToken": "...", "user": { ... } }
+
+- POST /auth/logout
+  Mô tả: Đăng xuất.
+  Phản hồi: { "message": "Đăng xuất thành công" }
+
+- GET /auth/google
+  Mô tả: Lấy URL đăng nhập qua Google.
+  Phản hồi: { "url": "..." }
+
+- DELETE /auth/me
+  Mô tả: Tự xóa tài khoản cá nhân.
+  Yêu cầu: Header "Authorization: Bearer <token>".
+  Phản hồi: { "message": "Đã xóa user ID: ..." }
+
+
+2. QUẢN LÝ THIẾT BỊ (/device)
+--------------------------------------------------------------------------------
+* Yêu cầu Header: Authorization: Bearer <token>
+
+- GET /device/my-systems
+  Mô tả: Lấy danh sách các hồ cá thuộc sở hữu của người dùng.
+  Phản hồi: { "total": 1, "systems": [...] }
+
+- POST /device/register
+  Mô tả: Đăng ký một hệ thống (hồ cá) mới.
+  Tham số (Body): { "name": "SA01", "description": "Hồ cá phòng khách" }
+  Phản hồi: { "message": "...", "system": { ... } }
+
+- DELETE /device/:systemName
+  Mô tả: Xóa (Hủy đăng ký) một hệ thống.
+  Phản hồi: { "message": "Hệ thống ... đã được xóa thành công" }
+
+- POST /device/control
+  Mô tả: Gửi lệnh điều khiển thiết bị tới hồ cá.
+  Tham số (Body):
+    + Bật/Tắt Relay: { "systemName": "SA01", "device": "RELAY", "index": 1, "value": true }
+    + Điều khiển Camera: { "systemName": "SA01", "device": "CAMERA", "value": true }
+    + Cho cá ăn: { "systemName": "SA01", "device": "FEEDER" }
+    + Đo độ pH: { "systemName": "SA01", "device": "PH_METER" }
+    + Chỉnh đèn: { "systemName": "SA01", "device": "LIGHT", "value": 150 } (0-255)
+  Phản hồi: { "message": "Lệnh đã gửi thành công", "command": { ... } }
+
+
+3. LỊCH TRÌNH TỰ ĐỘNG (/schedule)
+--------------------------------------------------------------------------------
+* Yêu cầu Header: Authorization: Bearer <token>
+
+- GET /schedule
+  Mô tả: Lấy danh sách tất cả các lịch trình đã cài đặt.
+  Phản hồi: Danh sách đối tượng DeviceConfig.
+
+- POST /schedule
+  Mô tả: Tạo một lịch trình tự động mới.
+  Tham số (Body): systemName, device, startTime, duration, value.
+  Phản hồi: Đối tượng DeviceConfig vừa tạo.
+
+- DELETE /schedule/:id
+  Mô tả: Xóa một lịch trình theo ID.
+  Phản hồi: { "affected": 1 }
+
+- PATCH /schedule/:id/toggle
+  Mô tả: Bật hoặc tắt kích hoạt của một lịch trình.
+  Tham số (Body): isActive (boolean), systemName.
+  Phản hồi: { "success": true }
+
+
+4. DỮ LIỆU CẢM BIẾN (/sensor)
+--------------------------------------------------------------------------------
+* Yêu cầu Header: Authorization: Bearer <token> (Trừ SSE)
+
+- GET /sensor/events (SSE)
+  Mô tả: Luồng dữ liệu Real-time (Server-Sent Events) gửi về Dashboard.
+  Phản hồi: Stream dữ liệu (Temperature, pH, Liquid...).
+
+- POST /sensor/status
+  Mô tả: Lấy trạng thái cảm biến mới nhất của một hệ thống.
+  Tham số (Body): systemName.
+  Phản hồi: { "temperature": ..., "ph": ..., "liquid": ... }
+
+- GET /sensor/history
+  Mô tả: Lấy lịch sử dữ liệu cảm biến (biểu đồ).
+  Tham số (Query): systemName, limit (mặc định 20).
+  Phản hồi: Mảng các bản ghi SensorLog.
+
+- GET /sensor/info/:systemName
+  Mô tả: Lấy thông tin chi tiết và trạng thái cấu hình hệ thống.
+  Phản hồi: Dữ liệu chi tiết hệ thống.
+
+- DELETE /sensor/:systemName
+  Mô tả: Xóa toàn bộ dữ liệu log của hệ thống đó.
+  Phản hồi: { "message": "Đã xóa log..." }
+
+
+5. CAMERA STREAMING (/stream)
+--------------------------------------------------------------------------------
+* Yêu cầu Header: Authorization: Bearer <token>
+
+- POST /stream/start
+  Mô tả: Kích hoạt luồng Stream Camera và nhận diện AI.
+  Tham số (Body): systemName.
+  Phản hồi: { "liveUrl": "...", "aiUrl": "...", "message": "..." }
+
+- POST /stream/stop
+  Mô tả: Tắt luồng Stream đang chạy của người dùng.
+  Phản hồi: { "message": "Đã dừng stream" }
+
+--------------------------------------------------------------------------------
+LƯU Ý CHUNG:
+1. Định dạng lỗi: { "statusCode": 403, "message": "...", "error": "Forbidden" }
+2. Tất cả API bảo mật yêu cầu Header: "Authorization: Bearer <access_token>"
+3. Quyền sở hữu hệ thống được kiểm tra tự động qua SystemAuthGuard.
