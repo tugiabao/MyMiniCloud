@@ -1,5 +1,46 @@
 # Changelog
 
+## 2.0.3
+
+##### Chores
+
+* **i18n:**
+  *  update translation keys to represent usage (#1837) (528e86e7)
+  *  enable eslint rules and translate all user-facing strings (#1833) (59041da0)
+
+##### Documentation Changes
+
+*  Add permissions info (#1838) (d2ecb3e8)
+
+##### Bug Fixes
+
+* **Feature Flags:**  remove logsPanelControls (#1844) (47ad21e9)
+* **Config:**  initialize feature flags in the configuration page (#1843) (a7942b72)
+
+##### Performance Improvements
+
+* **i18n:**  prevent loading en-US translations at runtime (#1841) (c7579309)
+
+
+## 2.0.2
+
+##### Chores
+
+* **ErrorStates:**  use EmptyState remove GrotError, translate (#1827) (287dfc26)
+* **i18n:**  add @grafana/i18n infrastructure (#1814) (e09c0823)
+
+##### New Features
+
+*  add Knowledge Graph insights annotations to timeseries (#1819) (4463f560)
+* **alerts:**  add log panel alerts (#1822) (16f1fc8f)
+
+##### Bug Fixes
+
+* **Breakdown Search:**  Fix visual overflow (#1832) (decc4ffd)
+* **insights:**  use namespaced goff flag for KG annotations (#1831) (70f24b69)
+* **cve:**  lodash and brace-expansion (#1829) (828ac54d)
+
+
 ## 2.0.1
 
 ##### Chores

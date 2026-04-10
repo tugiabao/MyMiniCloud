@@ -19,3 +19,17 @@ venv/
 .DS_Store
 Thumbs.db
 clean.bat
+
+# Dữ liệu Docker Container (Tránh đẩy lên Git các file DB/Logs nội bộ rất nặng)
+c3-dbview/data/
+c4-auth/data/
+c7-monitor/data/
+c8-logging/data/
+
+# Build & Dependencies của Node.js / NestJS / React (Cho c1 và c2)
+node_modules/
+dist/
+build/
+.pnpm-store/
+# File Executable
+*.exe
