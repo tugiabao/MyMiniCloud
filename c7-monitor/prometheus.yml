@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'minio'
+    bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiYWRtaW5fbWluaW8iLCJleHAiOjQ5Mjg1ODMxNjh9.x07pwlELMIm3eRQVnMQOWLrMzX-Tak4JHNOnCWzbLkTFjLssiO-_Ga0ZndPTtl614Tk5Qe-yFdSOU3OeTYpkog
+    metrics_path: /minio/v2/metrics/cluster
+    scheme: http
+    static_configs:
+      - targets: ['c5.myminicloud.local:9000']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    metric_relabel_configs:
+      # Chỉ giữ metrics của project "myminicloud" HOẶC không có label project (machine_*, /sys...)
+      # Dấu | ở cuối cho phép chuỗi rỗng (metrics không thuộc compose project nào)
+      - source_labels: [container_label_com_docker_compose_project]
+        regex: 'myminicloud|'
+        action: keep
+
+
+  # Sau này thêm c2 (App), c4 (Keycloak) vào đây
