@@ -31,7 +31,9 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isConnected, setIsConnected] = useState(false);
   
   // Dùng ref để giữ danh sách system hiện tại, tránh dependency loop
-  const systemsRef = useRef<string[]>([]); 
+  const systemsRef = useRef<string[]>([]);
+  // Dùng Set để chặn việc emit join_room liên tục giống nhau
+  const joinedRoomsRef = useRef<Set<string>>(new Set());
 
   /**
    * 1. Khởi tạo Socket & Lắng nghe sự kiện
@@ -43,8 +45,14 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     const onConnect = () => {
         setIsConnected(true);
-        // Re-join rooms khi reconnect
-        systemsRef.current.forEach(sys => socket.emit('join_room', sys));
+        // Re-join rooms khi reconnect, phải clear set để nó emit lại
+        joinedRoomsRef.current.clear();
+        systemsRef.current.forEach(sys => {
+            if (!joinedRoomsRef.current.has(sys)) {
+                joinedRoomsRef.current.add(sys);
+                socket.emit('join_room', sys);
+            }
+        });
     };
 
     const onDisconnect = () => setIsConnected(false);
@@ -75,13 +83,13 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       socket.off('disconnect', onDisconnect);
       socket.off('sensor_update', onSensorUpdate);
     };
-  }, [user]);
+  }, [user?.id]); // 👈 Đổi thành user?.id để không bị Render Loop do thẻ OIDC refresh token
 
   /**
    * 2. Hàm Eager Fetch: Lấy danh sách hệ thống -> Join Room -> Lấy Snapshot & Config
    */
   const initSystems = useCallback(async () => {
-    if (!user) return;
+    if (!user?.id) return;
 
     try {
         // A. Lấy danh sách hệ thống của user
@@ -115,7 +123,10 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         // C. Join Room & Lấy Snapshot cho TỪNG hệ thống
         for (const sysName of systems) {
             // Join Socket Room
-            if (socket.connected) socket.emit('join_room', sysName);
+            if (socket.connected && !joinedRoomsRef.current.has(sysName)) {
+                joinedRoomsRef.current.add(sysName);
+                socket.emit('join_room', sysName);
+            }
 
             // Fetch Snapshot (REST API)
             try {
@@ -152,12 +163,12 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } catch (error) {
         console.error("Lỗi khởi tạo hệ thống cảm biến:", error);
     }
-  }, [user]);
+  }, [user?.id]); // 👈 Chỉ theo dõi chuỗi ID thay vì object để tránh vòng lặp bộ nhớ
 
   // Tự động chạy init khi user thay đổi (đăng nhập)
   useEffect(() => {
-    if (user) initSystems();
-  }, [user, initSystems]);
+    if (user?.id) initSystems();
+  }, [user?.id, initSystems]);
 
   /**
    * 3. Client-side Monitoring: Giám sát liên tục
