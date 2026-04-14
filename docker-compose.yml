@@ -109,6 +109,8 @@ services:
       KC_PROXY_HEADERS: "xforwarded" # Phiên bản Keycloak mới bắt buộc dùng tham số này để nhận diện X-Forwarded-Proto từ Nginx
       KC_HOSTNAME: "auth.azura.io.vn" # Thay vì .local để bắt buộc Keycloak dùng Public Domain
       KC_HTTP_ENABLED: "true"
+      JAVA_OPTS_APPEND: "-Xms128m -Xmx256m" # Giới hạn JVM Heap: khởi đầu 128MB, tối đa 256MB (tránh ngốn hết RAM trên Free Tier)
+    mem_limit: 400m # Giới hạn cứng RAM cho container (256MB heap + overhead)
     depends_on:
       - c3
     networks:
@@ -213,12 +215,18 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     restart: always
+    privileged: true # Cần thiết trên Oracle Cloud để đọc CPU/Network metrics
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
+      - /proc:/host/proc:ro # Cho phép đọc thông tin tiến trình (CPU metrics)
+    command:
+      - '--housekeeping_interval=30s' # Giảm tần suất quét để tiết kiệm RAM
+      - '--docker_only=true'          # Chỉ theo dõi Docker containers
+      - '--disable_metrics=percpu,sched,tcp,udp,hugetlb,referenced_memory' # Bỏ metrics không cần
     networks:
       cloud-net:
         ipv4_address: 172.19.0.12
