@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useAuth as useOidcAuth } from 'react-oidc-context';
 import { authService } from '../services/authService';
 import type { RegisterRequest, UpdateProfileRequest, User } from '../types';
