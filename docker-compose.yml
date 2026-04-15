@@ -109,8 +109,7 @@ services:
       KC_PROXY_HEADERS: "xforwarded" # Phiên bản Keycloak mới bắt buộc dùng tham số này để nhận diện X-Forwarded-Proto từ Nginx
       KC_HOSTNAME: "auth.azura.io.vn" # Thay vì .local để bắt buộc Keycloak dùng Public Domain
       KC_HTTP_ENABLED: "true"
-      JAVA_OPTS_APPEND: "-Xms128m -Xmx256m" # Giới hạn JVM Heap: khởi đầu 128MB, tối đa 256MB (tránh ngốn hết RAM trên Free Tier)
-    mem_limit: 400m # Giới hạn cứng RAM cho container (256MB heap + overhead)
+      JAVA_OPTS_APPEND: "-Xms128m -Xmx512m" # Giới hạn JVM Heap (Linux swap sẽ hỗ trợ khi RAM vật lý hết)
     depends_on:
       - c3
     networks:
