@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyMiniCloud Blog — Gia Bảo</title>
+    <meta name="description" content="Blog cá nhân chia sẻ kiến thức về Cloud Computing và dự án MyMiniCloud">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="#" class="logo">
+                    <span class="logo-icon">☁️</span>
+                    <span class="logo-text">MyMiniCloud</span>
+                </a>
+                <nav class="nav">
+                    <a href="#about">Giới thiệu</a>
+                    <a href="#architecture">Kiến trúc</a>
+                    <a href="#deploy">Triển khai</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">📝 Blog cá nhân</div>
+            <h1>MyMiniCloud</h1>
+            <p class="hero-subtitle">Xây dựng hạ tầng Cloud Computing từ con số 0 với Docker, Nginx và các công nghệ mã nguồn mở</p>
+            <div class="hero-author">
+                <div class="author-avatar">GB</div>
+                <div class="author-info">
+                    <strong>Tú Gia Bảo</strong>
+                    <span>Cloud Computing • 2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BÀI 1: GIỚI THIỆU ===== -->
+    <article class="post" id="about">
+        <div class="container">
+            <div class="post-header">
+                <span class="post-number">Bài 01</span>
+                <span class="post-date">Tháng 4, 2026</span>
+            </div>
+            <h2>Giới thiệu dự án MyMiniCloud</h2>
+            
+            <div class="post-content">
+                <div class="highlight-box">
+                    <h3>🎯 Mục tiêu dự án</h3>
+                    <p>MyMiniCloud là một hệ thống hạ tầng Cloud Computing thu nhỏ được xây dựng hoàn toàn bằng Docker Container, mô phỏng cách mà các nhà cung cấp Cloud thực tế (AWS, Google Cloud, Azure) vận hành các dịch vụ.</p>
+                </div>
+
+                <h3>Tại sao lại là MyMiniCloud?</h3>
+                <p>Trong quá trình học tập môn Cloud Computing, thay vì chỉ sử dụng các dịch vụ Cloud có sẵn, tôi muốn tự tay xây dựng từ đầu một hệ thống hoàn chỉnh để hiểu sâu hơn về cách mà Cloud thực sự hoạt động "bên dưới lớp vỏ".</p>
+
+                <h3>Ứng dụng thực tế: Smart Aquarium</h3>
+                <p>Để chứng minh hạ tầng MyMiniCloud có thể phục vụ ứng dụng thực tế, tôi đã triển khai hệ thống <strong>Smart Aquarium</strong> — một bảng điều khiển IoT giám sát và quản lý hồ cá thông minh, bao gồm:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h4>Giám sát Realtime</h4>
+                        <p>Cảm biến nhiệt độ, pH, độ đục cập nhật liên tục qua WebSocket</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h4>Xác thực OIDC</h4>
+                        <p>Đăng nhập bằng tài khoản, Google hoặc Facebook qua Keycloak</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚖️</div>
+                        <h4>Cân bằng tải</h4>
+                        <p>Nginx phân phối request cho 4 backend instance</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h4>Giám sát hạ tầng</h4>
+                        <p>Prometheus + Grafana theo dõi CPU, RAM, Network</p>
+                    </div>
+                </div>
+
+                <h3>Công nghệ sử dụng</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Nginx</span>
+                    <span class="tech-tag">NestJS</span>
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Keycloak</span>
+                    <span class="tech-tag">MinIO</span>
+                    <span class="tech-tag">Prometheus</span>
+                    <span class="tech-tag">Grafana</span>
+                    <span class="tech-tag">Cloudflare Tunnel</span>
+                    <span class="tech-tag">BIND9 DNS</span>
+                    <span class="tech-tag">MQTT</span>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- ===== BÀI 2: KIẾN TRÚC ===== -->
+    <article class="post post-alt" id="architecture">
+        <div class="container">
+            <div class="post-header">
+                <span class="post-number">Bài 02</span>
+                <span class="post-date">Tháng 4, 2026</span>
+            </div>
+            <h2>Kiến trúc hệ thống MyMiniCloud</h2>
+
+            <div class="post-content">
+                <p>Hệ thống MyMiniCloud gồm <strong>10+ container</strong> Docker hoạt động trên một mạng ảo nội bộ (<code>172.19.0.0/16</code>), mỗi container đóng vai trò một "server" độc lập:</p>
+
+                <div class="architecture-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Container</th>
+                                <th>IP nội bộ</th>
+                                <th>Vai trò</th>
+                                <th>Công nghệ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>c1-sa-web</strong></td>
+                                <td>172.19.0.2</td>
+                                <td>Web Frontend</td>
+                                <td>React + Vite + Nginx</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c2-sa-api</strong></td>
+                                <td>172.19.0.3</td>
+                                <td>Backend API</td>
+                                <td>NestJS + TypeORM</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c3</strong></td>
+                                <td>172.19.0.4</td>
+                                <td>Database</td>
+                                <td>PostgreSQL 15</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c4</strong></td>
+                                <td>172.19.0.5</td>
+                                <td>Authentication</td>
+                                <td>Keycloak (OIDC)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c5</strong></td>
+                                <td>172.19.0.6</td>
+                                <td>Object Storage</td>
+                                <td>MinIO (S3-compatible)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c6</strong></td>
+                                <td>172.19.0.7</td>
+                                <td>DNS Server</td>
+                                <td>BIND9</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c7</strong></td>
+                                <td>172.19.0.8</td>
+                                <td>Metrics Collector</td>
+                                <td>Prometheus</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c8</strong></td>
+                                <td>172.19.0.9</td>
+                                <td>Dashboard</td>
+                                <td>Grafana</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c9</strong></td>
+                                <td>172.19.0.10</td>
+                                <td>Reverse Proxy / LB</td>
+                                <td>Nginx</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c10</strong></td>
+                                <td>172.19.0.11</td>
+                                <td>Tunnel (HTTPS)</td>
+                                <td>Cloudflare</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Luồng hoạt động</h3>
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-num">1</div>
+                        <div class="flow-desc">
+                            <strong>User truy cập</strong>
+                            <p>sa.azura.io.vn → Cloudflare → c10 Tunnel</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-num">2</div>
+                        <div class="flow-desc">
+                            <strong>Reverse Proxy</strong>
+                            <p>c9 Nginx phân luồng theo tên miền</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-num">3</div>
+                        <div class="flow-desc">
+                            <strong>Load Balancer</strong>
+                            <p>Chia đều cho 4 instance Backend</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-num">4</div>
+                        <div class="flow-desc">
+                            <strong>Backend xử lý</strong>
+                            <p>NestJS query PostgreSQL, trả JSON</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Load Balancing</h3>
+                <p>Hệ thống sử dụng <strong>Nginx Upstream</strong> với thuật toán Round-Robin để phân phối request đều giữa 4 instance Backend API:</p>
+                <div class="code-block">
+                    <pre><code>upstream backend_pool {
+    server 172.19.0.3:3000;   # c2-sa-api (gốc)
+    server 172.19.0.21:3000;  # c2-api-1
+    server 172.19.0.22:3000;  # c2-api-2
+    server 172.19.0.23:3000;  # c2-api-3
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- ===== BÀI 3: TRIỂN KHAI ===== -->
+    <article class="post" id="deploy">
+        <div class="container">
+            <div class="post-header">
+                <span class="post-number">Bài 03</span>
+                <span class="post-date">Tháng 4, 2026</span>
+            </div>
+            <h2>Hướng dẫn triển khai MyMiniCloud</h2>
+
+            <div class="post-content">
+                <p>MyMiniCloud đã được triển khai thành công trên <strong>2 nền tảng Cloud</strong>:</p>
+
+                <div class="deploy-grid">
+                    <div class="deploy-card">
+                        <h4>☁️ AWS EC2</h4>
+                        <ul>
+                            <li>Instance: t2.micro (Free Tier)</li>
+                            <li>RAM: 1 GB + 4 GB Swap</li>
+                            <li>Storage: 26 GB EBS</li>
+                            <li>Chế độ: Single instance</li>
+                        </ul>
+                    </div>
+                    <div class="deploy-card">
+                        <h4>🔶 Oracle Cloud</h4>
+                        <ul>
+                            <li>Instance: A1.Flex (Free Tier)</li>
+                            <li>RAM: 24 GB</li>
+                            <li>CPU: 4 vCPU ARM</li>
+                            <li>Chế độ: Load Balancing (4 instance)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Bước 1: Clone và cấu hình</h3>
+                <div class="code-block">
+                    <pre><code># Clone mã nguồn
+git clone https://github.com/tugiabao/MyMiniCloud.git
+cd MyMiniCloud
+
+# Tạo file biến môi trường
+cp .env.example .env
+nano .env  # Điền thông tin DB, Auth, Storage...</code></pre>
+                </div>
+
+                <h3>Bước 2: Khởi động hệ thống</h3>
+                <div class="code-block">
+                    <pre><code># Khởi động toàn bộ 10+ container
+docker compose up -d --build
+
+# Kiểm tra trạng thái
+docker ps</code></pre>
+                </div>
+
+                <h3>Bước 3: Cấu hình Keycloak</h3>
+                <div class="code-block">
+                    <pre><code># Truy cập: https://auth.azura.io.vn
+# 1. Tạo Realm: smart_aquarium
+# 2. Tạo Client: aquarium-frontend
+# 3. Cấu hình Web Origins: https://sa.azura.io.vn
+# 4. Tạo User</code></pre>
+                </div>
+
+                <h3>Bước 4: Bật Load Balancing (Oracle Cloud)</h3>
+                <div class="code-block">
+                    <pre><code># Tạo file override cho Load Balancing
+cat docker-compose.override.yml
+
+# Rebuild với 4 instance backend
+docker compose up -d --build
+
+# Chạy demo
+bash demo-lb.sh</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>💡 Kinh nghiệm rút ra</h3>
+                    <ul>
+                        <li><strong>RAM là yếu tố quyết định:</strong> AWS Free Tier (1GB) chỉ đủ chạy single instance, cần swap 4GB</li>
+                        <li><strong>Docker Compose Override:</strong> Cho phép cùng 1 repo chạy trên nhiều môi trường khác nhau</li>
+                        <li><strong>Cloudflare Tunnel:</strong> Giải pháp HTTPS miễn phí không cần mở port 443</li>
+                        <li><strong>ip_hash:</strong> Bắt buộc cho WebSocket/Socket.IO khi dùng Load Balancing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 MyMiniCloud — Tú Gia Bảo | Cloud Computing</p>
+            <p class="footer-links">
+                <a href="https://github.com/tugiabao/MyMiniCloud" target="_blank">GitHub</a>
+                <span>•</span>
+                <a href="https://sa.azura.io.vn" target="_blank">Smart Aquarium</a>
+                <span>•</span>
+                <a href="https://monitor.azura.io.vn" target="_blank">Grafana</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
