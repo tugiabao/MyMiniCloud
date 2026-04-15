@@ -13,6 +13,7 @@ import { AutomationModule } from './automation/automation.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { SocketModule } from './socket/socket.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { SocketModule } from './socket/socket.module';
     AuthModule,
     MailModule,
     SocketModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
