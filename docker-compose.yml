@@ -48,7 +48,7 @@ services:
     restart: always
     networks:
       cloud-net:
-        ipv4_address: "172.19.0.12"
+        ipv4_address: "${IP_C1_BLOG}"
     dns:
       - "${IP_C6}"
     depends_on:
