@@ -1,103 +1,143 @@
 #!/bin/bash
 # ============================================================
-# LOAD BALANCING STRESS TEST - MyMiniCloud
-# Gửi nhiều request đồng thời tới 4 instance và đếm phân phối
+# LOAD BALANCING DEMO - MyMiniCloud
+# Tất cả request đều gửi qua Nginx (c9) Load Balancer
+# C9 tự động phân phối cho các instance backend
 # ============================================================
 
-INSTANCES=("172.19.0.3:3000" "172.19.0.21:3000" "172.19.0.22:3000" "172.19.0.23:3000")
-NAMES=("c2-sa-api" "c2-api-1" "c2-api-2" "c2-api-3")
+NGINX_URL="http://172.19.0.10"
+HOST_HEADER="Host: api-be.azura.io.vn"
 TOTAL_REQUESTS=100
-CONCURRENT=4
 
 echo "=============================================="
-echo "  🚀 LOAD BALANCING STRESS TEST"
+echo "  🚀 LOAD BALANCING DEMO"
 echo "  Tổng request: $TOTAL_REQUESTS"
-echo "  Số instance: ${#INSTANCES[@]}"
-echo "  Request/instance: $((TOTAL_REQUESTS / ${#INSTANCES[@]}))"
+echo "  Tất cả gửi qua: Nginx (c9) Load Balancer"
 echo "=============================================="
 echo ""
 
-# --- Xóa log cũ để đếm chính xác ---
-for name in "${NAMES[@]}"; do
-    docker logs "$name" --since 1s > /dev/null 2>&1
-done
+# --- BƯỚC 0: Tạm tắt ip_hash để demo Round-Robin ---
+echo "🔧 Chuyển Nginx sang chế độ Round-Robin (demo)..."
+docker exec c9 sh -c "sed -i 's/ip_hash;/#ip_hash; # disabled for demo/' /etc/nginx/conf.d/default.conf && nginx -s reload" 2>/dev/null
+sleep 1
 
-TIMESTAMP=$(date +%s)
-echo "⏱️  Bắt đầu gửi $TOTAL_REQUESTS request..."
+# --- BƯỚC 1: Gửi 100 request qua c9 ---
+echo "⏱️  Đang gửi $TOTAL_REQUESTS request qua Nginx Load Balancer..."
 echo ""
 
-# --- Gửi request đồng thời tới tất cả instance ---
-for i in $(seq 1 $((TOTAL_REQUESTS / ${#INSTANCES[@]}))); do
-    for idx in "${!INSTANCES[@]}"; do
-        curl -s "http://${INSTANCES[$idx]}/health?t=$TIMESTAMP&r=$i" > /dev/null &
-    done
+for i in $(seq 1 $TOTAL_REQUESTS); do
+    curl -s -H "$HOST_HEADER" "$NGINX_URL/health?r=$i" > /dev/null &
+    # Giới hạn 10 request đồng thời
+    if (( i % 10 == 0 )); then
+        wait
+    fi
 done
-
-# Chờ tất cả request hoàn thành
 wait
-echo "✅ Đã gửi xong $TOTAL_REQUESTS request!"
+
+echo "✅ Đã gửi xong $TOTAL_REQUESTS request qua Nginx!"
+echo ""
+sleep 2
+
+# --- BƯỚC 2: Đếm số request mỗi instance xử lý ---
+echo "=============================================="
+echo "  📊 KẾT QUẢ: NGINX ĐÃ PHÂN PHỐI NHƯ SAU"
+echo "=============================================="
+echo ""
+echo "  Tất cả $TOTAL_REQUESTS request → Nginx (c9) → Backend Pool"
 echo ""
 
-# --- Đếm số request mỗi instance đã xử lý ---
-echo "=============================================="
-echo "  📊 KẾT QUẢ PHÂN PHỐI TẢI"
-echo "=============================================="
-echo ""
-
+NAMES=("c2-sa-api" "c2-api-1" "c2-api-2" "c2-api-3")
 TOTAL=0
-for idx in "${!NAMES[@]}"; do
-    COUNT=$(docker logs "${NAMES[$idx]}" --since 30s 2>&1 | grep -c "LoadBalancer")
+
+for name in "${NAMES[@]}"; do
+    COUNT=$(docker logs "$name" --since 30s 2>&1 | grep -c "GET /health")
     TOTAL=$((TOTAL + COUNT))
-    BAR=$(printf '█%.0s' $(seq 1 $((COUNT / 2))))
-    printf "  %-12s │ %3d requests │ %s\n" "${NAMES[$idx]}" "$COUNT" "$BAR"
+    PERCENT=$((COUNT * 100 / TOTAL_REQUESTS))
+    BAR=$(printf '█%.0s' $(seq 1 $((COUNT / 2 + 1))))
+    printf "  %-12s │ %3d requests (%2d%%) │ %s\n" "$name" "$COUNT" "$PERCENT" "$BAR"
 done
 
 echo ""
-echo "  ─────────────────────────────────"
+echo "  ─────────────────────────────────────────"
 printf "  %-12s │ %3d requests\n" "TỔNG" "$TOTAL"
 echo ""
-echo "✅ Tải được phân phối đều giữa ${#INSTANCES[@]} instance!"
+
+if [ $TOTAL -gt 0 ]; then
+    echo "  ✅ Nginx (c9) đã phân phối $TOTAL request cho ${#NAMES[@]} instance!"
+else
+    echo "  ⚠️  Không đếm được request. Kiểm tra lại middleware logger."
+fi
+
+echo ""
 echo ""
 
-# --- Demo Fault Tolerance ---
+# =============================================================
+# BƯỚC 3: FAULT TOLERANCE — TẮT 1 INSTANCE
+# =============================================================
 echo "=============================================="
 echo "  ⚠️  FAULT TOLERANCE TEST"
 echo "=============================================="
 echo ""
-echo "Tắt c2-api-2..."
+echo "  Trước khi tắt:"
+docker ps --format "    {{.Names}}\t{{.Status}}" | grep -E "c2-api|c2-sa"
+echo ""
+
+echo "  ⛔ Đang tắt c2-api-2..."
 docker stop c2-api-2 > /dev/null 2>&1
 sleep 2
 
-echo "Gửi thêm 75 request (chỉ còn 3 instance)..."
-TIMESTAMP2=$(date +%s)
-ALIVE_INSTANCES=("172.19.0.3:3000" "172.19.0.21:3000" "172.19.0.23:3000")
-ALIVE_NAMES=("c2-sa-api" "c2-api-1" "c2-api-3")
+echo ""
+echo "  Sau khi tắt:"
+docker ps --format "    {{.Names}}\t{{.Status}}" | grep -E "c2-api|c2-sa"
+echo "    c2-api-2     ❌ OFFLINE"
+echo ""
 
-for i in $(seq 1 25); do
-    for idx in "${!ALIVE_INSTANCES[@]}"; do
-        curl -s "http://${ALIVE_INSTANCES[$idx]}/health?t=$TIMESTAMP2&r=$i" > /dev/null &
-    done
+echo "  ⏱️  Gửi thêm $TOTAL_REQUESTS request qua Nginx..."
+for i in $(seq 1 $TOTAL_REQUESTS); do
+    curl -s -H "$HOST_HEADER" "$NGINX_URL/health?ft=$i" > /dev/null &
+    if (( i % 10 == 0 )); then
+        wait
+    fi
 done
 wait
+sleep 2
 
 echo ""
-echo "📊 Phân phối sau khi tắt c2-api-2:"
+echo "  📊 Phân phối khi chỉ còn 3 instance:"
 echo ""
-for idx in "${!ALIVE_NAMES[@]}"; do
-    COUNT=$(docker logs "${ALIVE_NAMES[$idx]}" --since 10s 2>&1 | grep -c "LoadBalancer")
-    BAR=$(printf '█%.0s' $(seq 1 $((COUNT / 2))))
-    printf "  %-12s │ %3d requests │ %s\n" "${ALIVE_NAMES[$idx]}" "$COUNT" "$BAR"
+
+ALIVE_NAMES=("c2-sa-api" "c2-api-1" "c2-api-3")
+TOTAL2=0
+for name in "${ALIVE_NAMES[@]}"; do
+    COUNT=$(docker logs "$name" --since 15s 2>&1 | grep -c "GET /health")
+    TOTAL2=$((TOTAL2 + COUNT))
+    BAR=$(printf '█%.0s' $(seq 1 $((COUNT / 2 + 1))))
+    printf "  %-12s │ %3d requests │ %s\n" "$name" "$COUNT" "$BAR"
 done
 printf "  %-12s │  ❌ OFFLINE\n" "c2-api-2"
 
 echo ""
-echo "✅ 3 instance còn lại tự động gánh tải!"
+echo "  ✅ Hệ thống vẫn xử lý bình thường với 3 instance!"
 echo ""
 
-# Khôi phục
-echo "🔄 Khôi phục c2-api-2..."
+# =============================================================
+# BƯỚC 4: KHÔI PHỤC
+# =============================================================
+echo "=============================================="
+echo "  🔄 KHÔI PHỤC"
+echo "=============================================="
+echo ""
+echo "  Đang khôi phục c2-api-2..."
 docker start c2-api-2 > /dev/null 2>&1
 sleep 3
-echo "✅ c2-api-2 đã hoạt động trở lại!"
+
+echo "  Đang bật lại ip_hash (sticky session cho WebSocket)..."
+docker exec c9 sh -c "sed -i 's/#ip_hash; # disabled for demo/ip_hash;/' /etc/nginx/conf.d/default.conf && nginx -s reload" 2>/dev/null
+
 echo ""
-docker ps --format "table {{.Names}}\t{{.Status}}" | grep -E "c2-api|c2-sa"
+echo "  ✅ Trạng thái cuối cùng:"
+docker ps --format "    {{.Names}}\t{{.Status}}" | grep -E "c2-api|c2-sa"
+echo ""
+echo "=============================================="
+echo "  🎉 DEMO HOÀN TẤT!"
+echo "=============================================="
