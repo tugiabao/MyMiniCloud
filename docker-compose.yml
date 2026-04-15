@@ -241,7 +241,7 @@ services:
       - '--disable_metrics=percpu,sched,tcp,udp,hugetlb,referenced_memory' # Bỏ metrics không cần
     networks:
       cloud-net:
-        ipv4_address: 172.19.0.12
+        ipv4_address: "${IP_CADVISOR}"
     dns:
       - "${IP_C6}"
 

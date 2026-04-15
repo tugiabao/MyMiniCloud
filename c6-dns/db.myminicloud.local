@@ -20,6 +20,7 @@ c7      IN      A       ${IP_C7}
 c8      IN      A       ${IP_C8}
 c9      IN      A       ${IP_C9}
 c1-blog IN      A       ${IP_C1_BLOG}
+cadvisor IN     A       ${IP_CADVISOR}
 
 ; THÊM CÁC DÒNG NÀY ĐỂ nslookup db.myminicloud.local HOẠT ĐỘNG
 web     IN      CNAME   c1-sa-web
