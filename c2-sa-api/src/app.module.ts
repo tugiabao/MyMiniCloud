@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DeviceConfig } from './entities/device-config.entity';
@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { SocketModule } from './socket/socket.module';
 import { HealthModule } from './health/health.module';
+import { RequestLoggerMiddleware } from './middleware/request-logger.middleware';
 
 @Module({
   imports: [
@@ -48,4 +49,10 @@ import { HealthModule } from './health/health.module';
     HealthModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // Log mọi request HTTP kèm hostname instance (dùng cho demo Load Balancing)
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+  }
+}
+
