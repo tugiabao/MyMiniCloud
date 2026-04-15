@@ -41,6 +41,19 @@ services:
     depends_on:
       - c6
 
+  # --- c1-blog: Blog cá nhân (Static Site) ---
+  c1-blog:
+    build: ./c1-blog
+    container_name: c1-blog
+    restart: always
+    networks:
+      cloud-net:
+        ipv4_address: "172.19.0.12"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      - c6
+
   # --- c2-sa-api: Application Server (NestJS, Smart Aquarium Backend) ---
   c2-sa-api:
     build: ./c2-sa-api
