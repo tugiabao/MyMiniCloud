@@ -15,6 +15,8 @@ services:
       - IP_C7=${IP_C7}
       - IP_C8=${IP_C8}
       - IP_C9=${IP_C9}
+      - IP_C1_BLOG=${IP_C1_BLOG}
+      - IP_CADVISOR=${IP_CADVISOR}
     networks:
       cloud-net:
         ipv4_address: "${IP_C6}"
