@@ -104,7 +104,7 @@ services:
       - ./c3-dbview/data:/opt/cloudbeaver/workspace
     networks:
       cloud-net:
-        ipv4_address: 172.19.0.13
+        ipv4_address: "${IP_C3_DBVIEW}"
     dns:
       - "${IP_C6}"
 
