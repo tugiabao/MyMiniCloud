@@ -33,3 +33,6 @@ build/
 .pnpm-store/
 # File Executable
 *.exe
+
+# Docker Compose Override (Moi server co cau hinh rieng, khong day len Git)
+docker-compose.override.yml
