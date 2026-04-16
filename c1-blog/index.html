@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyMiniCloud Blog — Gia Bảo</title>
-    <meta name="description" content="Blog cá nhân chia sẻ kiến thức về Cloud Computing và dự án MyMiniCloud">
+    <title>Báo Cáo Đồ Án Cloud — MyMiniCloud</title>
+    <meta name="description" content="Báo cáo thực tế dự án MyMiniCloud">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- ===== HEADER ===== -->
     <header class="header">
@@ -19,9 +22,12 @@
                     <span class="logo-text">MyMiniCloud</span>
                 </a>
                 <nav class="nav">
-                    <a href="#about">Giới thiệu</a>
-                    <a href="#architecture">Kiến trúc</a>
-                    <a href="#deploy">Triển khai</a>
+                    <a href="#chuong1">C1. Giới thiệu</a>
+                    <a href="#chuong2">C2. Kiến trúc</a>
+                    <a href="#chuong3">C3. Cấu hình</a>
+                    <a href="#chuong4">C4. Demo</a>
+                    <a href="#chuong5">C5. Đánh giá</a>
+                    <a href="#phuluc">Phụ Lục</a>
                 </nav>
             </div>
         </div>
@@ -30,301 +36,923 @@
     <!-- ===== HERO ===== -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">📝 Blog cá nhân</div>
-            <h1>MyMiniCloud</h1>
-            <p class="hero-subtitle">Xây dựng hạ tầng Cloud Computing từ con số 0 với Docker, Nginx và các công nghệ mã nguồn mở</p>
-            <div class="hero-author">
-                <div class="author-avatar">GB</div>
-                <div class="author-info">
-                    <strong>Tú Gia Bảo</strong>
-                    <span>Cloud Computing • 2026</span>
-                </div>
-            </div>
+            <div class="hero-badge">🎓 Báo Cáo Luận Văn Khoa Học</div>
+            <h1>Báo cáo Kỹ thuật MyMiniCloud</h1>
+            <p class="hero-subtitle">Mô phỏng kiến trúc Microservices & Object Storage trên Môi trường Điện toán Đám mây
+            </p>
         </div>
     </section>
 
-    <!-- ===== BÀI 1: GIỚI THIỆU ===== -->
-    <article class="post" id="about">
-        <div class="container">
+    <!-- ===== CHƯƠNG 1: GIỚI THIỆU & MỤC TIÊU ===== -->
+    <article class="post" id="chuong1">
+        <div class="container clearfix">
             <div class="post-header">
-                <span class="post-number">Bài 01</span>
-                <span class="post-date">Tháng 4, 2026</span>
+                <span class="post-number">Chương 01</span>
+                <span class="post-date">GIỚI THIỆU & MỤC TIÊU</span>
             </div>
-            <h2>Giới thiệu dự án MyMiniCloud</h2>
-            
+            <h2>Sự thiết yếu của Cloud & Định hướng Dự án</h2>
+
             <div class="post-content">
-                <div class="highlight-box">
-                    <h3>🎯 Mục tiêu dự án</h3>
-                    <p>MyMiniCloud là một hệ thống hạ tầng Cloud Computing thu nhỏ được xây dựng hoàn toàn bằng Docker Container, mô phỏng cách mà các nhà cung cấp Cloud thực tế (AWS, Google Cloud, Azure) vận hành các dịch vụ.</p>
+                <p>Trong kỷ nguyên số, nhu cầu xử lý lượng dữ liệu khổng lồ theo thời gian thực đã khiến <strong>Cloud
+                        Computing (Điện toán Đám mây)</strong> trở thành nền tảng hạ tầng cốt lõi cho phần lớn ứng dụng
+                    công nghệ. Việc duy trì máy chủ vật lý truyền thống tiềm ẩn nguy cơ quá tải hệ thống khi lưu lượng
+                    truy cập gia tăng đột biến, qua đó khẳng định sự cấp thiết của các mô hình trung tâm dữ liệu toàn
+                    cầu như Google Cloud (GCP) hay Microsoft Azure.</p>
+
+                <p>Mặc dù vậy, trong khuôn khổ đánh giá tính khả thi của việc mô phỏng hệ thống, chúng tôi đặt trọng tâm
+                    nghiên cứu và phân tích hai nhà cung cấp phổ biến nhất trên thị trường hiện nay:</p>
+
+                <div class="grid-cards" style="margin-top: 24px; margin-bottom: 32px;">
+                    <!-- So sánh AWS -->
+                    <div class="card" style="border-top: 3px solid #f59e0b;">
+                        <h4 style="color: #f59e0b; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                            <span>☁️</span> Amazon Web Services (AWS)
+                        </h4>
+                        <p style="margin-bottom: 16px;">Nền tảng Cloud hàng đầu với hệ sinh thái dịch vụ đa dạng. Tuy
+                            nhiên, mức độ phân bổ tài nguyên cho tầng miễn phí (Free Tier) tương đối hạn chế:</p>
+                        <ul style="color: #bbb; padding-left: 20px;">
+                            <li><strong>CPU:</strong> 1 vCPU (Instance t2.micro)</li>
+                            <li><strong>RAM:</strong> Tối đa dung lượng 1 GB</li>
+                        </ul>
+                    </div>
+                    <!-- So sánh Oracle -->
+                    <div class="card" style="border-top: 3px solid #ef4444;">
+                        <h4 style="color: #ef4444; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                            <span>🗄️</span> Oracle Cloud (OCI)
+                        </h4>
+                        <p style="margin-bottom: 16px;">Nhà cung cấp triển khai chương trình Always Free với cấu trúc
+                            tài nguyên tối ưu cao, tạo điều kiện thuận lợi làm môi trường triển khai thực nghiệm:</p>
+                        <ul style="color: #bbb; padding-left: 20px;">
+                            <li><strong>CPU:</strong> 4 oCPU (kiến trúc ARM) hiệu năng tiêu chuẩn</li>
+                            <li><strong>RAM:</strong> Khối lượng cấp phát tối đa lên tới 24 GB</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <h3>Tại sao lại là MyMiniCloud?</h3>
-                <p>Trong quá trình học tập môn Cloud Computing, thay vì chỉ sử dụng các dịch vụ Cloud có sẵn, tôi muốn tự tay xây dựng từ đầu một hệ thống hoàn chỉnh để hiểu sâu hơn về cách mà Cloud thực sự hoạt động "bên dưới lớp vỏ".</p>
+                <h3>Giới thiệu Dự án MyMiniCloud</h3>
+                <p>Dựa trên tương quan về thông số cấu hình và tính khả mở, chuyên đề <strong>MyMiniCloud</strong> định
+                    hướng tận dụng tài nguyên hạ tầng của Oracle Cloud để phát triển độc lập một không gian lưu trữ và
+                    xử lý mang chuẩn mực máy chủ đám mây riêng biệt, không phụ thuộc vào hạ tầng Managed Services của
+                    AWS.</p>
 
-                <h3>Ứng dụng thực tế: Smart Aquarium</h3>
-                <p>Để chứng minh hạ tầng MyMiniCloud có thể phục vụ ứng dụng thực tế, tôi đã triển khai hệ thống <strong>Smart Aquarium</strong> — một bảng điều khiển IoT giám sát và quản lý hồ cá thông minh, bao gồm:</p>
+                <p>MyMiniCloud được thiết kế chặt chẽ theo cấu trúc vi dịch vụ (Microservices), chia tách thành mạng
+                    lưới gồm <strong>9 phân vùng độc lập (Containers)</strong>. Hệ thống cụm máy chủ ảo này hoạt động
+                    trong một mạng nội bộ khép kín, phân bổ nhiệm vụ rõ ràng: Điều hướng truy cập, Caching, Quản lý CSDL
+                    (Database) quy mô vừa, và Dịch vụ Quan trắc (Monitoring) nhằm theo dõi liên tục trạng thái hoạt động
+                    (Health Status) và thông lượng tài nguyên của toàn hệ thống.</p>
 
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h4>Giám sát Realtime</h4>
-                        <p>Cảm biến nhiệt độ, pH, độ đục cập nhật liên tục qua WebSocket</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔐</div>
-                        <h4>Xác thực OIDC</h4>
-                        <p>Đăng nhập bằng tài khoản, Google hoặc Facebook qua Keycloak</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⚖️</div>
-                        <h4>Cân bằng tải</h4>
-                        <p>Nginx phân phối request cho 4 backend instance</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📈</div>
-                        <h4>Giám sát hạ tầng</h4>
-                        <p>Prometheus + Grafana theo dõi CPU, RAM, Network</p>
-                    </div>
-                </div>
-
-                <h3>Công nghệ sử dụng</h3>
-                <div class="tech-stack">
-                    <span class="tech-tag">Docker</span>
-                    <span class="tech-tag">Nginx</span>
-                    <span class="tech-tag">NestJS</span>
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                    <span class="tech-tag">Keycloak</span>
-                    <span class="tech-tag">MinIO</span>
-                    <span class="tech-tag">Prometheus</span>
-                    <span class="tech-tag">Grafana</span>
-                    <span class="tech-tag">Cloudflare Tunnel</span>
-                    <span class="tech-tag">BIND9 DNS</span>
-                    <span class="tech-tag">MQTT</span>
+                <div class="placeholder-large" style="margin-top: 32px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776334276175-Screenshot-2026-04-16-170928.png"
+                        alt="9 Containers">
                 </div>
             </div>
         </div>
     </article>
 
-    <!-- ===== BÀI 2: KIẾN TRÚC ===== -->
-    <article class="post post-alt" id="architecture">
-        <div class="container">
+    <!-- ===== CHƯƠNG 2: KIẾN TRÚC & SƠ ĐỒ ===== -->
+    <article class="post post-alt" id="chuong2">
+        <div class="container clearfix">
             <div class="post-header">
-                <span class="post-number">Bài 02</span>
-                <span class="post-date">Tháng 4, 2026</span>
+                <span class="post-number">Chương 02</span>
+                <span class="post-date">KIẾN TRÚC MẠNG</span>
             </div>
-            <h2>Kiến trúc hệ thống MyMiniCloud</h2>
+            <h2>Sơ đồ Network & Flow Request</h2>
 
             <div class="post-content">
-                <p>Hệ thống MyMiniCloud gồm <strong>10+ container</strong> Docker hoạt động trên một mạng ảo nội bộ (<code>172.19.0.0/16</code>), mỗi container đóng vai trò một "server" độc lập:</p>
+                <p>Mạng nội bộ trong mô hình được thiết kế chặt chẽ xoay quanh cầu nối <code>cloud-net</code>. Các
+                    Container như Web, API, Database, và Storage đều giao tiếp với nhau bằng IP cục bộ tĩnh hoặc thông
+                    qua tên miền phân giải bởi máy chủ DNS nội bộ (c6).</p>
 
-                <div class="architecture-table">
+                <p>Bảng thiết lập cấu hình dưới đây thống kê các địa chỉ IP tĩnh IPv4 và thiết lập định danh tên miền
+                    nội mạng (Local Domain) đã được quy hoạch phục vụ quá trình phân giải DNS:</p>
+
+                <div class="tech-table">
                     <table>
                         <thead>
                             <tr>
                                 <th>Container</th>
-                                <th>IP nội bộ</th>
-                                <th>Vai trò</th>
-                                <th>Công nghệ</th>
+                                <th>IP Tĩnh (172.19.0.x)</th>
+                                <th>Tên miền định danh (C6 DNS)</th>
+                                <th>Khối Phục vụ / Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>c1-sa-web</strong></td>
+                                <td><a href="https://sa.azura.io.vn" target="_blank"
+                                        class="container-link"><strong>c1-sa-web</strong></a></td>
                                 <td>172.19.0.2</td>
-                                <td>Web Frontend</td>
-                                <td>React + Vite + Nginx</td>
+                                <td>sa.myminicloud.local</td>
+                                <td>Tầng giao diện người dùng (Frontend)</td>
                             </tr>
                             <tr>
-                                <td><strong>c2-sa-api</strong></td>
+                                <td><a href="#" class="container-link"><strong>c1-blog</strong></a></td>
+                                <td>172.19.0.14</td>
+                                <td>blog.myminicloud.local</td>
+                                <td>Ứng dụng Máy chủ Web tĩnh (Báo cáo nội bộ)</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://api.azura.io.vn" target="_blank"
+                                        class="container-link"><strong>c2-sa-api</strong></a></td>
                                 <td>172.19.0.3</td>
-                                <td>Backend API</td>
-                                <td>NestJS + TypeORM</td>
+                                <td>api.myminicloud.local</td>
+                                <td>Tầng dịch vụ xử lý logic cốt lõi (Backend API)</td>
                             </tr>
                             <tr>
                                 <td><strong>c3</strong></td>
                                 <td>172.19.0.4</td>
-                                <td>Database</td>
-                                <td>PostgreSQL 15</td>
+                                <td>db.myminicloud.local</td>
+                                <td>Hệ quản trị CSDL quan hệ (PostgreSQL)</td>
                             </tr>
                             <tr>
-                                <td><strong>c4</strong></td>
+                                <td><a href="https://dbview.azura.io.vn" target="_blank"
+                                        class="container-link"><strong>c3-dbview</strong></a></td>
+                                <td>172.19.0.13</td>
+                                <td>dbview.myminicloud.local</td>
+                                <td>Giao diện Web cấu hình cơ sở dữ liệu (DBeaver)</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://auth.azura.io.vn" target="_blank"
+                                        class="container-link"><strong>c4</strong></a></td>
                                 <td>172.19.0.5</td>
-                                <td>Authentication</td>
-                                <td>Keycloak (OIDC)</td>
+                                <td>auth.myminicloud.local</td>
+                                <td>Nền tảng xác thực định danh SSO (Keycloak)</td>
                             </tr>
                             <tr>
-                                <td><strong>c5</strong></td>
+                                <td><a href="https://storage.azura.io.vn" target="_blank"
+                                        class="container-link"><strong>c5</strong></a></td>
                                 <td>172.19.0.6</td>
-                                <td>Object Storage</td>
-                                <td>MinIO (S3-compatible)</td>
+                                <td>storage.myminicloud.local</td>
+                                <td>Hệ thống lưu trữ đối tượng dạng S3 (MinIO)</td>
                             </tr>
                             <tr>
                                 <td><strong>c6</strong></td>
                                 <td>172.19.0.7</td>
-                                <td>DNS Server</td>
-                                <td>BIND9</td>
+                                <td>dns.myminicloud.local</td>
+                                <td>Máy chủ tên miền nội mạng (Bind9)</td>
                             </tr>
                             <tr>
                                 <td><strong>c7</strong></td>
                                 <td>172.19.0.8</td>
-                                <td>Metrics Collector</td>
-                                <td>Prometheus</td>
+                                <td>prometheus.myminicloud.local</td>
+                                <td>Tiến trình thu thập Metrics của Server</td>
                             </tr>
                             <tr>
-                                <td><strong>c8</strong></td>
+                                <td><a href="https://monitor.azura.io.vn" target="_blank"
+                                        class="container-link"><strong>c8</strong></a></td>
                                 <td>172.19.0.9</td>
-                                <td>Dashboard</td>
-                                <td>Grafana</td>
+                                <td>monitor.myminicloud.local</td>
+                                <td>Giao diện biểu đồ đánh giá cấu hình tải (Grafana)</td>
                             </tr>
                             <tr>
                                 <td><strong>c9</strong></td>
                                 <td>172.19.0.10</td>
-                                <td>Reverse Proxy / LB</td>
-                                <td>Nginx</td>
+                                <td>proxy.myminicloud.local</td>
+                                <td>Điều phối luồng và Cân bằng tải (Nginx)</td>
                             </tr>
                             <tr>
                                 <td><strong>c10</strong></td>
                                 <td>172.19.0.11</td>
-                                <td>Tunnel (HTTPS)</td>
-                                <td>Cloudflare</td>
+                                <td>tunnel.myminicloud.local</td>
+                                <td>Dịch vụ bảo mật đường ống kết nối (Cloudflare Tunnel)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>cadvisor</strong></td>
+                                <td>172.19.0.12</td>
+                                <td>cadvisor.myminicloud.local</td>
+                                <td>Tiện ích phụ trợ đo lường phần cứng ngoại vi</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h3>Luồng hoạt động</h3>
-                <div class="flow-diagram">
+                <div style="clear: both; margin-bottom: 32px;"></div>
+
+                <h3>Cơ chế luân chuyển dữ liệu (Data Request Flow)</h3>
+                <p>Mọi luồng dữ liệu yêu cầu kết nối từ người sử dụng đều được cơ chế bảo mật C10 (Cloudflare Tunnel)
+                    xác thực trước khi định tuyến luồng nhập vào trong máy chủ. Sau đó, gói tin được chuyển tiếp đến C9
+                    (Nginx). Nginx thông qua thủ tục phân giải DNS trên C6 sẽ định tuyến đến cụm phần mềm xử lý
+                    (Backend/Frontend) với hình thức cân bằng tải vòng lặp liên tục.</p>
+
+                <div class="flow" style="margin-top: 32px;">
                     <div class="flow-step">
                         <div class="flow-num">1</div>
-                        <div class="flow-desc">
-                            <strong>User truy cập</strong>
-                            <p>sa.azura.io.vn → Cloudflare → c10 Tunnel</p>
+                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
+                            <strong style="color: #fff; font-size: 15px;">Người sử dụng</strong>
+                            <div style="font-size: 13px; margin-top: 6px;">Truy vấn giao thức HTTPS để lấy tài nguyên
+                                (Interface/Data)</div>
                         </div>
                     </div>
                     <div class="flow-arrow">→</div>
                     <div class="flow-step">
-                        <div class="flow-num">2</div>
-                        <div class="flow-desc">
-                            <strong>Reverse Proxy</strong>
-                            <p>c9 Nginx phân luồng theo tên miền</p>
+                        <div class="flow-num" style="background: linear-gradient(135deg, #f59e0b, #d97706);">2</div>
+                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
+                            <strong style="color: #fff; font-size: 15px;">C10 (Tunnel)</strong>
+                            <div style="font-size: 13px; margin-top: 6px;">Xác lập đường hầm truyền dẫn giao tiếp với
+                                Host</div>
                         </div>
                     </div>
                     <div class="flow-arrow">→</div>
                     <div class="flow-step">
-                        <div class="flow-num">3</div>
-                        <div class="flow-desc">
-                            <strong>Load Balancer</strong>
-                            <p>Chia đều cho 4 instance Backend</p>
+                        <div class="flow-num" style="background: linear-gradient(135deg, #10b981, #059669);">3</div>
+                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
+                            <strong style="color: #fff; font-size: 15px;">C9 (Nginx)</strong>
+                            <div style="font-size: 13px; margin-top: 6px;">Phân giải qua C6 (DNS) nhằm thực thi Cân Bằng
+                                Tải</div>
                         </div>
                     </div>
                     <div class="flow-arrow">→</div>
                     <div class="flow-step">
-                        <div class="flow-num">4</div>
-                        <div class="flow-desc">
-                            <strong>Backend xử lý</strong>
-                            <p>NestJS query PostgreSQL, trả JSON</p>
+                        <div class="flow-num" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">4</div>
+                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
+                            <strong style="color: #fff; font-size: 15px;">Microservices</strong>
+                            <div style="font-size: 13px; margin-top: 6px;">Phân phối yêu cầu đến nhóm C1 (Web), C2
+                                (API), hoặc C5</div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        </div>
+    </article>
 
-                <h3>Load Balancing</h3>
-                <p>Hệ thống sử dụng <strong>Nginx Upstream</strong> với thuật toán Round-Robin để phân phối request đều giữa 4 instance Backend API:</p>
+    <!-- ===== CHƯƠNG 3: CẤU HÌNH & DOCKERFILE ===== -->
+    <article class="post" id="chuong3">
+        <div class="container clearfix">
+            <div class="post-header">
+                <span class="post-number">Chương 03</span>
+                <span class="post-date">CODE CẤU HÌNH</span>
+            </div>
+            <h2>Mã nguồn Cấu hình Trọng điểm</h2>
+
+            <div class="post-content">
+                <p>Hiệu năng của MyMiniCloud phụ thuộc rất lớn vào việc ứng dụng kiến trúc <strong>Infrastructure as
+                        Code (IaC)</strong>. Mô hình này đòi hỏi phân tích chi tiết 5 nhóm tệp cấu hình cốt lõi, chịu
+                    trách nhiệm quản lý quy trình khởi động, thiết lập luồng mạng và phân bổ tài nguyên hệ thống.</p>
+
+                <h3>1. Tệp Cấu hình Môi trường (.env) - Tệp Biến Toàn cục</h3>
+                <div class="highlight-box" style="margin-bottom: 24px; padding: 24px;">
+                    <strong style="color:#60a5fa; font-size: 16px;">▶ Chức năng:</strong> Quản lý tập trung toàn bộ danh
+                    sách Mật khẩu bảo mật, Token hệ thống, và bảng phân bổ địa chỉ IP tĩnh IPv4 của 13 vùng chứa
+                    (containers) về một vị trí duy nhất. <br><br>
+                    <strong style="color:#10b981; font-size: 16px;">⚡ Tác động dự án:</strong> Cấu trúc này giảm thiểu
+                    đáng kể chu trình cập nhật cấu hình. Thay vì rà soát mã nguồn API, hay cấu trúc Database để thay thế
+                    mật khẩu, kỹ sư vận hành chỉ cần chỉnh sửa tại tệp <code>.env</code>. Cơ chế quản lý này kiểm soát
+                    rủi ro xung đột lớp Default Gateway và đảm bảo tính thống nhất mạng nội bộ (Consistency).
+                </div>
+                <p>Nhằm đáp ứng yêu cầu bảo mật mã nguồn mở trên nền tảng Github, tệp <code>.env</code> chính thức được
+                    cấu hình ẩn trong danh sách <code>.gitignore</code>. Cấu trúc dưới đây thể hiện nội dung tệp
+                    <code>.env.example</code> (tài liệu quy chiếu lược bỏ thông tin mật khẩu), phản ánh phân tầng thông
+                    số mạng tiêu chuẩn của dự án MyMiniCloud:
+                </p>
+                <div class="code-block" style="max-height: 400px; overflow-y: auto;">
+                    <pre><code># =================================================================
+# MYMINICLOUD - ENVIRONMENT CONFIGURATION EXAMPLE
+# Copy file này thành .env và điền các thông tin bảo mật thực tế
+# DÀNH CHO MÔI TRƯỜNG DOCKER COMPOSE NỘI BỘ MÁY CHỦ
+# =================================================================
+
+# --- THÔNG TIN CHUNG ---
+NETWORK_NAME=cloud-net
+DOMAIN_NAME=myminicloud.local
+TIMEZONE=Asia/Ho_Chi_Minh
+SUBNET_RANGE=172.19.0.0/16
+
+# --- DATABASE (c3) ---
+DB_IMAGE=postgres:15-alpine
+DB_DRIVER=postgresql
+DB_HOST=c3
+DB_PORT=5432
+DB_USER=admin
+DB_PASSWORD=your_db_password_here
+DB_NAME=myminicloud_db
+DB_SSL=false
+
+# --- APP (c2 - NestJS Backend) ---
+PORT_BACKEND=3000
+
+# Keycloak OIDC
+KEYCLOAK_URL=https://auth.azura.io.vn
+KEYCLOAK_REALM=smart_aquarium
+
+# --- AUTH (c4 - Keycloak) ---
+AUTH_ADMIN=admin
+AUTH_PASSWORD=your_auth_password_here
+
+# --- STORAGE (c5 - MinIO) ---
+STORAGE_USER=admin_minio
+STORAGE_PASSWORD=your_storage_password_here
+STORAGE_PORT_CONSOLE=9001
+STORAGE_ACCESS_KEY=your_access_key_here
+STORAGE_SECRET_KEY=your_secret_key_here
+
+# --- MONITORING (c7 - Prometheus, c8 - Grafana) ---
+GRAFANA_PORT_HOST=3001
+GRAFANA_USER=admin
+GRAFANA_PASSWORD=your_grafana_password_here
+
+# --- STATIC IPs (c1-c10) ---
+# Địa chỉ IP nội bộ cấp phát tĩnh đảm bảo Flow Request không bao giờ bị rối loạn
+IP_C1=172.19.0.2
+IP_C2=172.19.0.3
+IP_C3=172.19.0.4
+IP_C4=172.19.0.5
+IP_C5=172.19.0.6
+IP_C6=172.19.0.7
+IP_C7=172.19.0.8
+IP_C8=172.19.0.9
+IP_C9=172.19.0.10
+IP_C10=172.19.0.11
+IP_CADVISOR=172.19.0.12
+IP_C3_DBVIEW=172.19.0.13
+IP_C1_BLOG=172.19.0.14
+
+# --- CLOUDFLARE TUNNEL (c10) ---
+# Lấy chuỗi Token từ Zero Trust Dashboard
+TUNNEL_TOKEN=your_cloudflare_tunnel_token_here
+
+# =================================================================
+# --- SMART AQUARIUM ITP (c2 NestJS) ---
+# Cấu hình tính năng mở rộng ứng dụng
+# =================================================================
+
+# HiveMQ (MQTT Broker Cloud)
+MQTT_HOST=your_mqtt_host.hivemq.cloud
+MQTT_PORT=8883
+MQTT_USER=your_mqtt_username
+MQTT_PASS=your_mqtt_password
+
+# JWT & Auth redirect
+APP_JWT_SECRET=your_super_secret_jwt_key_here
+APP_JWT_EXPIRES=1d
+AUTH_REDIRECT_URL=https://sa.azura.io.vn
+GOOGLE_CALLBACK_URL=https://sa.azura.io.vn
+
+# Mail SMTP Server Gửi cảnh báo
+MAIL_USER=your_email@gmail.com
+MAIL_PASS=your_app_password_here
+
+# AI Service (chưa triển khai)
+AI_SERVICE_SECRET=your_ai_secret_here
+AI_SERVICE_URL=http://c11.myminicloud.local:5000</code></pre>
+                </div>
+
+                <h3>2. Cơ chế Dockerfile: Tối Ưu Hóa Dung lượng Container</h3>
+                <div class="highlight-box" style="margin-bottom: 24px; padding: 24px;">
+                    <strong style="color:#60a5fa; font-size: 16px;">▶ Chức năng:</strong> Khai báo bản thiết kế môi
+                    trường phân bổ (Base Image). Định dạng này quyết định giao thức điều kiện cho Container sẽ nhúng
+                    biên dịch phần mềm nào (NodeJS, Python, hay Server Nginx) và mở quyền truy cập cổng giao tiếp
+                    nào.<br><br>
+                    <strong style="color:#10b981; font-size: 16px;">⚡ Tác động dự án:</strong> Có vai trò chi phối chi
+                    phí tài nguyên phần cứng của vùng chứa lưu trữ hệ thống. Ví dụ phân vùng Web <code>c1-blog</code>
+                    dưới đây sử dụng <code>nginx:alpine</code> giới hạn ở mức dung lượng bộ nhớ thấp, giảm thiểu kích
+                    thước không gian lưu trữ và duy trì hiệu suất vận hành máy chủ (OS) so với ảo hóa nguyên khối hệ
+                    điều hành.
+                </div>
                 <div class="code-block">
-                    <pre><code>upstream backend_pool {
-    server 172.19.0.3:3000;   # c2-sa-api (gốc)
-    server 172.19.0.21:3000;  # c2-api-1
-    server 172.19.0.22:3000;  # c2-api-2
-    server 172.19.0.23:3000;  # c2-api-3
+                    <pre><code># Thư mục: /c1-blog/Dockerfile
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
+EXPOSE 80</code></pre>
+                </div>
+
+                <h3>3. Cấu hình Máy chủ Phân giải Tên miền (DNS - C6)</h3>
+                <div class="highlight-box" style="margin-bottom: 24px; padding: 24px;">
+                    <strong style="color:#60a5fa; font-size: 16px;">▶ Chức năng:</strong> Triển khai quy trình phân giải
+                    tên miền định tầng hệ thống cục bộ thông qua dịch vụ Bind9 (ví dụ: chuyển thành
+                    <code>api.myminicloud.local</code>) nhằm tối giản cấu trúc giao tiếp giữa các dịch vụ luồng mạng nội
+                    bộ.<br><br>
+                    <strong style="color:#10b981; font-size: 16px;">⚡ Tác động dự án:</strong> Đảm bảo tính linh hoạt
+                    kiến trúc trong trường hợp địa chỉ IP gặp thay đổi cấu hình. Phân vùng máy chủ C6 thực thi tác vụ
+                    <code>envsubst</code> để nạp và thay thế các hằng số IP từ tệp biến hệ thống <code>.env</code> vào
+                    các bản ghi phân giải trước thời điểm khởi chạy. Do vậy, cụm Nginx và Front-end chỉ yêu cầu cấp phép
+                    luồng mạng qua tên miền DNS.
+                </div>
+                <div class="code-block">
+                    <pre><code># Lệnh khởi động: Thay thế IP ảo vào file template rồi mới Run DNS Bind9
+CMD envsubst '$DOMAIN_NAME $IP_C1 $IP_C2 $IP_C3_DBVIEW ... ' &lt; /etc/bind/db.template &gt; /etc/bind/db.myminicloud.local && /usr/sbin/named -g -c /etc/bind/named.conf -u bind</code></pre>
+                </div>
+
+                <h3>4. Cấu hình Nginx Reverse Proxy (C9) - Cơ chế Điều phối</h3>
+                <div class="highlight-box" style="margin-bottom: 24px; padding: 24px;">
+                    <strong style="color:#60a5fa; font-size: 16px;">▶ Chức năng:</strong> Thiết lập quy chuẩn làm kịch
+                    bản <strong>"Điều phối luồng"</strong> (Traffic Dispatcher). Tiếp nhận toàn bộ lưu lượng định tuyến
+                    HTTPS từ máy khách (client) để phân tích và giao phó về các máy chủ Backend cục bộ
+                    (Microservices).<br><br>
+                    <strong style="color:#10b981; font-size: 16px;">⚡ Tác động dự án:</strong> Tổ chức cơ sở hạ tầng
+                    được biểu diễn rõ ràng qua các cấu trúc định danh độc lập dựa trên tên miền
+                    <code>server { ... }</code>. Các tham số như <code>client_max_body_size</code> (phục vụ chức năng
+                    lưu trữ tải truyền lượng tệp tin lớn cho nền tảng MinIO) và tham số hỗ trợ luồng truyền dữ liệu thời
+                    gian thực không giới hạn timeout (WebSocket Upgrade áp dụng riêng biệt cho mảng IoT Sensor) đều được
+                    cấp phép hoạt động trong giới hạn điều kiện Nginx giám sát.
+                </div>
+                <p>Nổi bật về khả năng đáp ứng hệ thống (Availability), <code>nginx-lb.conf</code> khai báo chuỗi hồ sơ
+                    điều phối luồng quy mô chịu tải (Load Balancer). Tệp này cài đặt cơ chế <code>upstream</code> xử lý
+                    vòng tuần hoàn cho 3 vùng chứa API độc lập tại backend pool, kết hợp thuộc tính cấu hình
+                    <code>proxy_next_upstream</code> thiết lập thuật toán lỗi dự phòng (Fast Failover). Nếu trạng thái
+                    giao dịch một Server không khả dụng, hệ thống xử lý tái định tuyến tức thời sang máy chủ thay thế
+                    trong giới hạn dung sai chỉ 2 giây.
+                </p>
+                <div class="code-block">
+                    <pre><code># Trích đoạn nginx-lb.conf: Khối UPSTREAM Cân Bằng Tải
+upstream backend_pool {
+    ip_hash; # Khóa Session giúp user không bị out khi đổi Server
+    # Nginx tự động đan xen request giữa 3 instance sau:
+    server 172.19.0.21:3000   max_fails=2 fail_timeout=5s;  # c2-api-1
+    server 172.19.0.22:3000   max_fails=2 fail_timeout=5s;  # c2-api-2
+    server 172.19.0.23:3000   max_fails=2 fail_timeout=5s;  # c2-api-3
+}
+
+server {
+    listen 80;
+    server_name api-be.azura.io.vn;
+
+    location / {
+        # Đẩy luồng dữ liệu vào Pool 3 máy chủ trên
+        proxy_pass http://backend_pool;
+        proxy_set_header X-Real-IP $remote_addr;
+        
+        # Cấu hình Fast Failover (Luân chuyển máy lỗi trong 2s)
+        proxy_connect_timeout 2s;
+        proxy_next_upstream error timeout http_502 http_503;
+    }
+}
+
+# KHỐI 3: KỊCH BẢN TRIỂN KHAI DOMAIN DÀNH CHO QUẢN TRỊ (MINIO CONSOLE)
+server {
+    listen 80;
+    server_name storage.azura.io.vn;
+
+    location / {
+        set $upstream_storage http://c5.myminicloud.local:9001;
+        proxy_pass $upstream_storage;
+
+        # Điểm khác biệt mấu chốt so với Web: MinIO S3 cần nhận diện đúng Host qua biến $http_host
+        proxy_set_header Host $http_host; 
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-NginX-Proxy true;
+
+        # Vẫn bắt buộc ép mở WebSocket để hỗ trợ Terminal SSH ngầm
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
 }</code></pre>
+                </div>
+
+                <h3>5. Điều phối Hệ thống: Docker Compose và Cơ chế Override</h3>
+                <div class="highlight-box" style="margin-bottom: 24px; padding: 24px;">
+                    <strong style="color:#60a5fa; font-size: 16px;">▶ Chức năng:</strong> Đại diện cho <strong>"Tệp kịch
+                        bản Khởi tạo hệ thống con"</strong> (System Initialization). Vai trò giám sát hệ thống của 13
+                    Containers được quy định bởi trật tự ưu tiên khi cấp phát thiết lập khởi chạy định danh IP và thiết
+                    lập biên màng cơ chế ảo hóa mạng phân tầng lớp <code>cloud-net</code>.<br><br>
+                    <strong style="color:#10b981; font-size: 16px;">⚡ Tác động kỹ thuật:</strong> Triển khai môi trường
+                    ảo hóa mở rộng. Đối với phần cứng hiệu suất cao (VM trang bị RAM 24GB do quản trị cấp), thuật toán
+                    <code>docker-compose.override.yml</code> cho phép sao chép cấu hình, tăng số lượng luồng dữ liệu API
+                    backend phục vụ cho kiến trúc cụm xử lý song song Nginx Cân bằng tải (3 instance cấp quyền), giảm
+                    thiểu hao tổn hiệu suất đáng kể từ quy chuẩn chỉ thiết lập 1 máy cấp pháp độc lập giới hạn ở tập tin
+                    Compose chung.
+                </div>
+
+                <p><strong>Cơ quan Đầu não Điều khiển Khởi động (Startup Orchestration):</strong> Sử dụng tham số
+                    <code>depends_on</code> định hình phương thức cấu trúc tuần tự chờ. Thiết lập Keycloak định danh
+                    (C4) sẽ nằm ở trạng thái "Chờ" (Pending) đến khi phân hệ lõi Database PostgreSQL (C3) được truy xuất
+                    cấu hình khả dụng. Cấu trúc yêu cầu tương đương áp dụng tại proxy Nginx (C9): Dịch vụ tường lửa định
+                    tuyến này cần truy cập đồng bộ phản hồi mạng lưới 5 thiết bị liên đới (API, Web, Auth, MinIO,
+                    Grafana) để bắt đầu xuất bản quy chuẩn phân giải mở cổng HTTP.
+                </p>
+                <div class="code-block">
+                    <pre><code># Trích đoạn điều kiện khởi động cấu trúc trong docker-compose.yml
+  c4:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: c4
+    depends_on:
+      - c3  # YÊU CẦU: Database nền tảng hoàn tất tải thiết lập trước khi cấp chạy dịch vụ Auth
+
+  c9:
+    build: ./c9-proxy
+    container_name: c9
+    depends_on:
+      - c1-sa-web  # C9 xác minh trạng thái Web Frontend khả dụng
+      - c2-sa-api  # C9 xác minh trạng thái luồng API Backend hoàn thiện
+      - c4         # C9 xác minh trạng thái giao thức OAuth định danh SSO
+      - c5         # C9 xác minh trạng thái Object Storage xử lý file an toàn
+      - c8         # C9 chờ kết thúc kích hoạt Dịch vụ quan trắc Monitoring</code></pre>
+                </div>
+
+                <p>Quy trình triển khai bổ sung cơ cấu Nginx Load Balancing bằng định dạng hệ sinh thái Scale Override
+                    được trình bày chi tiết như sau:</p>
+                <div class="code-block" style="max-height: 400px; overflow-y: auto;">
+                    <pre><code># ============================================================
+# DOCKER COMPOSE OVERRIDE - ORACLE CLOUD (Load Balancing)
+# ============================================================
+# File này TỰ ĐỘNG được Docker Compose gộp với docker-compose.yml
+# Chỉ đặt file này trên Oracle Cloud, KHÔNG đẩy lên Git.
+#
+# Chức năng:
+#   1. Tạo 3 instance Backend API (c2-api-1, c2-api-2, c2-api-3)
+#   2. Ghi đè c9 để dùng nginx-lb.conf (cân bằng tải)
+#   * c2-sa-api gốc vẫn chạy nhưng không nhận traffic (nginx chỉ route tới pool mới)
+# ============================================================
+
+services:
+
+  # ============================================================
+  # ✅ 3 INSTANCE BACKEND API (Load Balanced)
+  # ============================================================
+
+  c2-api-1:
+    build: ./c2-sa-api
+    container_name: c2-api-1
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
+      - TZ=Asia/Ho_Chi_Minh
+      - PORT_BACKEND=3000
+      - INSTANCE_ID=1
+    networks:
+      cloud-net:
+        ipv4_address: "172.19.0.21"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      - c6
+      - c3
+
+  c2-api-2:
+    build: ./c2-sa-api
+    container_name: c2-api-2
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
+      - TZ=Asia/Ho_Chi_Minh
+      - PORT_BACKEND=3000
+      - INSTANCE_ID=2
+    networks:
+      cloud-net:
+        ipv4_address: "172.19.0.22"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      - c6
+      - c3
+
+  c2-api-3:
+    build: ./c2-sa-api
+    container_name: c2-api-3
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
+      - TZ=Asia/Ho_Chi_Minh
+      - PORT_BACKEND=3000
+      - INSTANCE_ID=3
+    networks:
+      cloud-net:
+        ipv4_address: "172.19.0.23"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      - c6
+      - c3
+
+  # ============================================================
+  # 🔁 GHI ĐÈ C9: Build tường lửa từ lớp Dockerfile.lb (cân bằng tải)
+  # ============================================================
+  c9:
+    build:
+      context: ./c9-proxy
+      dockerfile: Dockerfile.lb</code></pre>
+                </div>
+
+                <h3>6. Quy trình Triển khai thực tế trên Hạ tầng Cloud Services</h3>
+                <div class="highlight-box" style="margin-bottom: 24px; padding: 24px;">
+                    <strong style="color:#60a5fa; font-size: 16px;">▶ Chức năng:</strong> Chuyển đổi mã nguồn cấu trúc
+                    định tuyến (IaC) thành kiến trúc thực thể kết nối khả dụng đối với nền tảng máy khách truy cập
+                    Internet. Cơ chế sau tiêu chuẩn hóa hoạt động cấu hình hệ thống trên một phiên bản Cloud (VM
+                    Instance) tại trung tâm dữ liệu thứ ba.<br><br>
+                    <strong style="color:#10b981; font-size: 16px;">⚡ Tác động kỹ thuật:</strong> Thiết lập chu trình tự
+                    động hóa môi trường. Bỏ qua phương thức cài đặt thư viện hệ điều hành biên dịch thủ công thông dụng
+                    (như gói phần mềm Node.js, cài cấu hình Nginx hay phần mềm cài đặt Database PostgreSQL tĩnh), kỹ sư
+                    quản trị hệ thống sẽ điều phối 4 nhóm lệnh cơ bản dưới qua giao thức Terminal để thực thi kiến trúc
+                    13 lớp Docker, tạo tính đồng bộ phân phối nền tảng vận hành tuyệt đối.
+                </div>
+
+                <p>Mô phỏng chu trình chuẩn: Hệ điều hành (CPU kiến trúc ARM) và tệp chứng chỉ bảo mật (Private Key:
+                    <code>oracle-key.key</code>) ở máy cục bộ (localhost) đã ở trạng thái khả dụng. Quá trình cấu hình
+                    thiết lập toàn diện hệ thống như sau:
+                </p>
+
+                <div
+                    style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 16px; margin-bottom: 24px; border-radius: 4px;">
+                    <strong style="color: #f59e0b; font-size: 15px;">Lưu ý về cấu hình phân quyền khóa bảo mật (Windows
+                        OS):</strong>
+                    <p style="margin-top: 8px; margin-bottom: 0; font-size: 14px; color: #d1d5db;">Môi trường Windows
+                        thường cấp quyền mặc định hỗn hợp, dẫn đến việc giao thức SSH từ chối xác thực (Lỗi:
+                        <em>UNPROTECTED PRIVATE KEY FILE!</em>). Để khắc phục, kỹ sư quản trị mạng bắt buộc phải truy
+                        xuất thẻ <strong>Security</strong> trong thuộc tính của tệp <code>oracle-key.key</code>, thực
+                        thi lệnh <strong>Vô hiệu hóa quyền kế thừa (Disable Inheritance)</strong>, đồng thời thu hồi mọi
+                        thẩm quyền của các đối tượng khác, chỉ giới hạn duy nhất đặc quyền [Read] cho tài khoản vận hành
+                        hiện tại.
+                    </p>
+                </div>
+
+                <div class="code-block">
+                    <pre><code># Bước 1: Mở luồng kết nối phân giải bảo mật truy cập SSH hệ điều hành Ubuntu
+ssh -i "oracle-key.key" ubuntu@&lt;IP_PUBLIC_CỦA_MÁY_CHỦ_ĐÁM_MÂY&gt;
+
+# Bước 2: Đồng bộ toàn bộ dữ liệu tệp lưu trữ phiên bản kiểm soát Version Git
+git clone https://github.com/your-repo/MyMiniCloud.git
+cd MyMiniCloud
+
+# Bước 3: Thông số cấu hình biến cục bộ 
+# Thiết lập biến mã hóa thông tin theo kiến trúc phân vùng máy chủ
+cp .env.example .env
+nano .env
+
+# Bước 4: Khởi tạo quy trình Biên dịch môi trường phần mềm tự động độc lập
+# Quy chuẩn dưới sẽ tổng hợp tham số cấu hình hạ tầng mạng cloud-net, tích hợp quy tắc Load Balancing
+# kết hợp phân rã các Container song hành để chuẩn bị phục vụ chức năng.
+docker compose up -d --build
+
+# Kiểm tra đánh giá thông tin trạng thái các tiến trình môi trường
+docker ps -a</code></pre>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+    <!-- ===== CHƯƠNG 4: DEMO & KIỂM THỬ ===== -->
+    <article class="post post-alt" id="chuong4">
+        <div class="container">
+            <div class="post-header">
+                <span class="post-number">Chương 04</span>
+                <span class="post-date">KẾT QUẢ THỰC TẾ</span>
+            </div>
+            <h2>Demo & Kiểm thử</h2>
+
+            <div class="post-content">
+                <p>Nội dung kiểm thử hệ thống được chia làm từng phân hệ chức năng tương ứng, nhằm chứng minh sự ổn định
+                    và tính khả dụng của các vùng chứa dịch vụ độc lập thuộc kiến trúc hạ tầng mạng nội bộ.</p>
+
+                <h3>1. Tổng quan Trạng thái Hệ thống (System Overview)</h3>
+                <p>Tiến trình kiểm tra toàn cảnh sau khi thực thi tệp cấu hình hệ thống. Màn hình minh họa dưới đây ghi
+                    nhận trạng thái toàn bộ hệ sinh thái dịch vụ (bao gồm 3 phiên bản API được nhân bản thông qua
+                    Override) đều duy trì trạng thái hoạt động trực tuyến (Up/Healthy), thiết lập thành công quỹ đạo IP
+                    tĩnh được cấp phát và không xảy ra các lỗi khởi động vòng lặp.</p>
+                <div class="placeholder-large" style="margin-bottom: 32px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776330090334-Screenshot-2026-04-16-155851.png"
+                        alt="Docker PS">
+                </div>
+
+                <h3>2. Giao diện Người dùng Web Frontend (C1-SA-WEB)</h3>
+                <p>Phân hệ chịu trách nhiệm xử lý ngôn ngữ giao diện từ máy khách (Client Interface). Hình ảnh minh họa
+                    xác nhận hệ thống truyền tải giao diện tương tác thành công thông qua định danh giao thức
+                    <code>sa.azura.io.vn</code>.
+                </p>
+                <div class="placeholder-large" style="margin-bottom: 32px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776330739300-Screenshot-2026-04-16-160507.png"
+                        alt="Web Frontend">
+                </div>
+
+                <h3>3. Tầng Ứng dụng Backend API (C2-SA-API)</h3>
+                <p>Đóng vai trò máy chủ xử lý dữ liệu logic cốt lõi. Kịch bản kiểm thử phản ánh tiến trình thiết lập
+                    phản hồi bảo mật (JSON Response) qua giao thức mã hóa HTTPS với 3 biến thể Cân Bằng Tải được khởi
+                    tạo.</p>
+                <div class="placeholder-large" style="margin-bottom: 32px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776331966402-Screenshot-2026-04-16-163219.png"
+                        alt="Backend API">
+                </div>
+
+                <h3>4. Hệ quản trị Cơ sở dữ liệu và Cấu trúc DBView (C3 & C3-DBVIEW)</h3>
+                <p>Giao diện kiểm thử ghi nhận cấu trúc lưu trữ PostgreSQL hoạt động đa phân luồng. Hệ thống đồng thời
+                    minh họa giao thức kết nối từ ứng dụng Web C3-DBView phục vụ thao tác cấu hình Data truy vấn nội bộ
+                    trực tiếp cho quản trị viên.</p>
+                <div class="placeholder-large" style="margin-bottom: 32px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776330743513-Screenshot-2026-04-16-160801.png"
+                        alt="PostgreSQL">
+                </div>
+
+                <h3>5. Nền tảng Xác thực Phân quyền SSO (C4 - Keycloak)</h3>
+                <p>Kiến trúc quản lý danh tính tập trung (Identity and Access Management). Hệ thống thiết lập thành công
+                    phiên bản đăng nhập bảo mật (Session Authentication) thông qua điều hướng vùng chứa Keycloak.</p>
+                <div class="placeholder-large" style="margin-bottom: 32px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776330747471-Screenshot-2026-04-16-161004.png"
+                        alt="Keycloak">
+                </div>
+
+                <h3>6. Hệ thống Phân giải Tên miền Nội mạng (C6 - DNS Bind9)</h3>
+                <p>Chu trình kiểm thử tín hiệu luồng Ping xác minh tiến trình biên dịch ánh xạ DNS từ C6. Khối DNS phân
+                    giải đúng đích danh vị trí từ định cấu hình ảo (ví dụ đổi <code>api.myminicloud.local</code> sang
+                    mảng lưu trữ <code>172.19.0.3</code>).</p>
+                <div class="placeholder-large" style="margin-bottom: 32px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776332159967-Screenshot-2026-04-16-163539.png"
+                        alt="DNS">
+                </div>
+
+                <h3>7. Tầng Quan trắc và Đánh giá luồng dữ liệu Metrics (C7 & C8)</h3>
+                <p>Liên kết truyền dẫn kép: Prometheus xử lý khai thác chỉ số phần cứng vi thông (RAM, CPU, Cache) dựa
+                    trên cAdvisor, phục vụ cho giao diện biểu đồ định dạng đồ họa Grafana thể hiện giám sát quá tải thời
+                    gian thực.</p>
+                <div class="placeholder-large"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); padding: 30px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776330755433-Screenshot-2026-04-16-161107.png"
+                        alt="Grafana">
+                </div>
+
+                <h3>8. Cơ chế Chuyển tiếp & Cân bằng tải qua Nginx (C9)</h3>
+                <p>Báo cáo ghi nhận thông lượng lưu trữ tại trạm Reverse Proxy. Danh sách log thể hiện việc Nginx chuyển
+                    đổi cơ sở phân tải giữa 3 cụm máy con và tiếp nhận nguyên vẹn giá trị IP thực của người sử dụng
+                    thông qua chuẩn X-Real-IP.</p>
+                <div class="placeholder-large" style="margin-bottom: 48px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776332875778-Screenshot-2026-04-16-164646.png"
+                        alt="Load Balancer">
+                </div>
+
+                <h3>9. Mô-đun Quản trị Lưu trữ (C5 - MinIO Object Storage)</h3>
+                <p>Phân hệ lưu trữ đối tượng dạng S3 minh chứng quy trình phân quyền thiết lập nội dung trực tuyến thông
+                    qua cổng Administrator Console. Dữ liệu hình ảnh được bảo chứng liên tục giữa Database Frontend và
+                    MinIO Bucket.</p>
+                <div class="placeholder-large" style="margin-bottom: 24px; padding: 40px;">
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776330751093-Screenshot-2026-04-16-161044.png"
+                        alt="MinIO">
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Trình diễn trực quan: Giao thức lưu trữ Object Storage (MinIO)</h3>
+                    <p>Phân hệ Storage <strong>C5</strong> chứng minh khả năng truyền tải và truy xuất tệp tin qua giao
+                        thức API theo cấu trúc thời gian thực. Bảng tương tác dưới đây mô phỏng phương thức truyền tải
+                        (Upload/Download) theo chuẩn tương thích S3.</p>
+                </div>
+
+                <!-- KHỐI DEMO C5 MINIO (GIỮ NGUYÊN) -->
+                <div class="media-frame" style="margin-top: 20px;">
+                    <div class="upload-ui">
+                        <p style="margin-bottom: 15px; color: #aaa; font-size: 14px;"><strong>Bước 1:</strong> Truy xuất
+                            dữ liệu hệ thống. Nhập định danh Bucket bảo mật và thực thi lệnh đối soát tập tin.</p>
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                            <select id="bucket-name" onchange="queryBucket()"
+                                style="padding: 10px 16px; border-radius: 6px; border: 1px solid #4b5563; background: #1a1a24; color: #fff; outline: none; flex: 1; min-width: 200px;">
+                                <option value="public-images">public-images</option>
+                                <option value="smart-aquarium-assets">smart-aquarium-assets</option>
+                                <option value="secure-docs">secure-docs</option>
+                            </select>
+                            <button class="upload-btn" onclick="queryBucket()" style="margin-bottom: 0;">Truy
+                                Xuất</button>
+                        </div>
+
+                        <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
+
+                        <!-- CỔNG XÁC THỰC UPLOAD (Tránh upload rác) -->
+                        <div id="upload-auth-section"
+                            style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed rgba(239, 68, 68, 0.4); text-align: left;">
+                            <p style="margin-bottom: 10px; color: #ef4444; font-size: 14px;"><strong>🔒 Khu vực bảo vệ
+                                    SSO:</strong> Yêu cầu kết nối tài khoản quản trị tập trung (Keycloak Authentication)
+                                trước khi tải dữ liệu.</p>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <button class="upload-btn" onclick="loginWithKeycloak()" id="auth-btn"
+                                    style="margin-bottom: 0; background: linear-gradient(135deg, #ef4444, #b91c1c); width: 100%;">
+                                    <span style="font-size: 18px; margin-right: 8px;">🔑</span> Connect to Keycloak
+                                </button>
+                            </div>
+                            <div id="auth-status" style="margin-top: 8px; font-size: 13px;"></div>
+                        </div>
+
+                        <!-- KHU VỰC UPLOAD (Ẩn theo mặc định) -->
+                        <div id="upload-container" style="display: none;">
+                            <p style="margin-bottom: 15px; color: #10b981; font-size: 14px; text-align: left;">
+                                <strong>Bước 2 (Khả dụng):</strong> Chỉ định vị trí cấp phát File lên cơ sở dữ liệu
+                                Bucket hiện tại.</p>
+                            <div class="upload-controls">
+                                <label class="custom-file-upload">
+                                    <input type="file" id="file-upload"
+                                        onchange="document.getElementById('file-name').innerText = this.files[0].name">
+                                    1. Chọn File Định Dạng
+                                </label>
+                                <span id="file-name"
+                                    style="margin:0 15px; color: #888; font-size: 14px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Chưa
+                                    phân bổ tệp</span>
+                                <button class="upload-btn" onclick="uploadToMinIO()"
+                                    style="margin-bottom: 0; background: linear-gradient(135deg, #10b981, #059669);">2.
+                                    Truyền Tải Dữ Liệu</button>
+                            </div>
+                            <div id="upload-status" class="upload-status"></div>
+                        </div>
+                    </div>
+
+                    <div class="bucket-explorer" style="text-align: left;">
+                        <h4 style="color: #fff; margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 8px;"
+                            id="explorer-title">Dữ liệu trong Bucket: (Chưa tải)</h4>
+                        <div id="objects-grid" class="objects-grid">
+                            <div
+                                style="color: #666; font-size: 14px; padding: 20px 0; width: 100%; text-align: center; grid-column: 1 / -1;">
+                                Bấm "Truy Xuất" để đồng bộ danh sách đối tượng lưu trữ (Objects).</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </article>
 
-    <!-- ===== BÀI 3: TRIỂN KHAI ===== -->
-    <article class="post" id="deploy">
-        <div class="container">
+    <!-- ===== CHƯƠNG 5: ĐÁNH GIÁ & PHÂN TÍCH ===== -->
+    <article class="post" id="chuong5">
+        <div class="container clearfix">
             <div class="post-header">
-                <span class="post-number">Bài 03</span>
-                <span class="post-date">Tháng 4, 2026</span>
+                <span class="post-number">Chương 05</span>
+                <span class="post-date">ĐÁNH GIÁ TỔNG KẾT</span>
             </div>
-            <h2>Hướng dẫn triển khai MyMiniCloud</h2>
+            <h2>Đánh giá kết quả & Hướng Phát triển tương lai</h2>
 
             <div class="post-content">
-                <p>MyMiniCloud đã được triển khai thành công trên <strong>2 nền tảng Cloud</strong>:</p>
+                <h3>Ưu điểm dự án</h3>
+                <ul>
+                    <li>Đảm bảo tính toàn vẹn và quyền tự chủ dữ liệu lưu trữ nội bộ thông qua mô hình Self-hosted
+                        Cloud.</li>
+                    <li>Tối ưu hóa khả năng triển khai liên nền tảng thông qua bộ mã lệnh IaC (Docker Compose).</li>
+                    <li>Tích hợp giao thức Cloudflare Tunnel nhằm vượt tường lửa NAT tĩnh, định tuyến Load Balancing
+                        mạng nội mạng hạn chế chi phí vận hành public IP.</li>
+                </ul>
 
-                <div class="deploy-grid">
-                    <div class="deploy-card">
-                        <h4>☁️ AWS EC2</h4>
-                        <ul>
-                            <li>Instance: t2.micro (Free Tier)</li>
-                            <li>RAM: 1 GB + 4 GB Swap</li>
-                            <li>Storage: 26 GB EBS</li>
-                            <li>Chế độ: Single instance</li>
-                        </ul>
+                <h3>Khó khăn & Thách thức kỹ thuật</h3>
+                <ul>
+                    <li>Quy trình cấp phát IP tĩnh trên nhiều node máy chủ ảo đòi hỏi giám sát bộ định tuyến mạng liên
+                        tục, tiềm ẩn nguy cơ xung đột Default Gateway.</li>
+                    <li>Kiến trúc phức hợp yêu cầu mức độ tiêu thụ RAM cơ bản đáng kể (tối ưu đánh giá ở mức Oracle 4
+                        CPU 24 GB) để duy trì tiến trình chạy ngầm đồng thời của Grafana, MinIO và hệ thống Java
+                        Keycloak SSO.</li>
+                </ul>
+
+                <h3>Hướng mở rộng thực tiễn</h3>
+                <ul>
+                    <li>Nghiên cứu cơ chế tích hợp khối xử lý học máy (AI Engine) trực tiếp tại tầng Backend phục vụ quy
+                        trình đánh giá rủi ro và trả về cảnh báo tự động hóa thay tác vụ thủ công.</li>
+                    <li>Áp dụng Kubernetes để Orchestrate vòng đời cụm Cluster thay cho Docker Compose cục bộ, từ đó mở
+                        rộng hiệu năng (Auto-Scaling) đáp ứng tải trọng cao.</li>
+                    <li>Phân giải Webhook từ Grafana đồng bộ sang Telegram nhằm thiết lập hệ thống cảnh báo tin nhắn
+                        thời gian thực khi tải trọng máy chủ phản hồi trạng thái trễ (Latency).</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+
+    <!-- ===== PHỤ LỤC ===== -->
+    <article class="post post-alt" id="phuluc">
+        <div class="container">
+            <div class="post-header">
+                <span class="post-number">Phụ Lục</span>
+                <span class="post-date">TÀI NGUYÊN BỔ SUNG</span>
+            </div>
+            <h2>Liên kết Dự án & Thành viên</h2>
+
+            <div class="post-content">
+                <!-- Video Placeholder -->
+                <div class="youtube-placeholder">
+                    <div class="placeholder-icon" style="color: #ef4444; font-size: 40px; margin-bottom: 12px;">▶️</div>
+                    <div style="font-size: 16px;">[Nhúng Iframe YouTube Video Demo Toàn Mạng Lưới]</div>
+                    <code
+                        style="color: rgba(239,68,68,0.7); margin-top: 10px;">Thẻ &lt;iframe class="youtube-placeholder" src="..."&gt;</code>
+                </div>
+
+                <p>Nguồn tài nguyên mã nguồn mở được tải và lưu trữ tại các hệ sinh thái sau:</p>
+                <ul>
+                    <li><strong>GitHub Code:</strong> <a href="https://github.com/tugiabao/MyMiniCloud"
+                            target="_blank">https://github.com/tugiabao/MyMiniCloud</a></li>
+                    <li><strong>Docker Hub:</strong> <a href="https://hub.docker.com/u/baobao04"
+                            target="_blank">https://hub.docker.com/u/baobao04</a></li>
+                </ul>
+
+                <!-- THÔNG TIN THÀNH VIÊN -->
+                <h3 style="margin-top: 40px;">Đội ngũ Thực hiện</h3>
+                <div class="member-grid">
+                    <div class="member-card">
+                        <div class="avatar-frame">
+                            <img src=""
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="avatar-placeholder" style="display: none;">[Ảnh Thành Viên 1]</div>
+                        </div>
+                        <div class="member-info">
+                            <input type="text" placeholder="Nhập tên TV 1..." value="">
+                            <input type="text" class="role-input" placeholder="MSSV - Vai trò...">
+                        </div>
                     </div>
-                    <div class="deploy-card">
-                        <h4>🔶 Oracle Cloud</h4>
-                        <ul>
-                            <li>Instance: A1.Flex (Free Tier)</li>
-                            <li>RAM: 24 GB</li>
-                            <li>CPU: 4 vCPU ARM</li>
-                            <li>Chế độ: Load Balancing (4 instance)</li>
-                        </ul>
+                    <div class="member-card">
+                        <div class="avatar-frame">
+                            <img src=""
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="avatar-placeholder" style="display: none;">[Ảnh Thành Viên 2]</div>
+                        </div>
+                        <div class="member-info">
+                            <input type="text" placeholder="Nhập tên TV 2..." value="">
+                            <input type="text" class="role-input" placeholder="MSSV - Vai trò...">
+                        </div>
                     </div>
                 </div>
 
-                <h3>Bước 1: Clone và cấu hình</h3>
-                <div class="code-block">
-                    <pre><code># Clone mã nguồn
-git clone https://github.com/tugiabao/MyMiniCloud.git
-cd MyMiniCloud
-
-# Tạo file biến môi trường
-cp .env.example .env
-nano .env  # Điền thông tin DB, Auth, Storage...</code></pre>
-                </div>
-
-                <h3>Bước 2: Khởi động hệ thống</h3>
-                <div class="code-block">
-                    <pre><code># Khởi động toàn bộ 10+ container
-docker compose up -d --build
-
-# Kiểm tra trạng thái
-docker ps</code></pre>
-                </div>
-
-                <h3>Bước 3: Cấu hình Keycloak</h3>
-                <div class="code-block">
-                    <pre><code># Truy cập: https://auth.azura.io.vn
-# 1. Tạo Realm: smart_aquarium
-# 2. Tạo Client: aquarium-frontend
-# 3. Cấu hình Web Origins: https://sa.azura.io.vn
-# 4. Tạo User</code></pre>
-                </div>
-
-                <h3>Bước 4: Bật Load Balancing (Oracle Cloud)</h3>
-                <div class="code-block">
-                    <pre><code># Tạo file override cho Load Balancing
-cat docker-compose.override.yml
-
-# Rebuild với 4 instance backend
-docker compose up -d --build
-
-# Chạy demo
-bash demo-lb.sh</code></pre>
-                </div>
-
-                <div class="highlight-box">
-                    <h3>💡 Kinh nghiệm rút ra</h3>
-                    <ul>
-                        <li><strong>RAM là yếu tố quyết định:</strong> AWS Free Tier (1GB) chỉ đủ chạy single instance, cần swap 4GB</li>
-                        <li><strong>Docker Compose Override:</strong> Cho phép cùng 1 repo chạy trên nhiều môi trường khác nhau</li>
-                        <li><strong>Cloudflare Tunnel:</strong> Giải pháp HTTPS miễn phí không cần mở port 443</li>
-                        <li><strong>ip_hash:</strong> Bắt buộc cho WebSocket/Socket.IO khi dùng Load Balancing</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </article>
@@ -332,15 +960,229 @@ bash demo-lb.sh</code></pre>
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
-            <p>© 2026 MyMiniCloud — Tú Gia Bảo | Cloud Computing</p>
-            <p class="footer-links">
-                <a href="https://github.com/tugiabao/MyMiniCloud" target="_blank">GitHub</a>
-                <span>•</span>
-                <a href="https://sa.azura.io.vn" target="_blank">Smart Aquarium</a>
-                <span>•</span>
-                <a href="https://monitor.azura.io.vn" target="_blank">Grafana</a>
-            </p>
+            <p>© 2026 Báo cáo Đồ án Cloud Computing</p>
         </div>
     </footer>
+
+    <!-- ===== IMAGE PREVIEW MODAL ===== -->
+    <div id="img-preview-modal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+        <img class="modal-content" id="modal-preview-img" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- AWS SDK -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1481.0.min.js"></script>
+    <!-- OAuth2 Implicit Flow (Xử lý thủ công, không phụ thuộc thư viện keycloak-js) -->
+
+    <script>
+        AWS.config.update({
+            accessKeyId: 'admin_minio',
+            secretAccessKey: 'minio_secret_123',
+            endpoint: 'https://api-storage.azura.io.vn',
+            s3ForcePathStyle: true,
+            signatureVersion: 'v4',
+            region: 'us-east-1'
+        });
+
+        const s3 = new AWS.S3();
+
+        function queryBucket() {
+            const bucketName = document.getElementById('bucket-name').value.trim();
+            if (!bucketName) return;
+
+            const titleEl = document.getElementById('explorer-title');
+            const gridEl = document.getElementById('objects-grid');
+
+            titleEl.innerHTML = `<span style="color: #60a5fa;">Đang tải dữ liệu từ Bucket: ${bucketName}... ⏳</span>`;
+            gridEl.innerHTML = '';
+
+            s3.listObjectsV2({ Bucket: bucketName }, function (err, data) {
+                if (err) {
+                    titleEl.innerHTML = `<span style="color: #ef4444;">Lỗi: ${err.message}</span>`;
+                    return;
+                }
+
+                titleEl.innerText = `Dữ liệu trong Bucket: ${bucketName} (${data.Contents.length} tệp)`;
+
+                if (data.Contents.length === 0) {
+                    gridEl.innerHTML = '<div style="color: #666; width: 100%; text-align: center; grid-column: 1 / -1;">Kho lưu trữ (Bucket) hiển thị trạng thái chưa có dữ liệu cấu thành. Yêu cầu tải lên định dạng tệp hợp lệ để tiến hành kiểm thử.</div>';
+                    return;
+                }
+
+                let html = '';
+                const sortedFiles = data.Contents.sort((a, b) => b.LastModified - a.LastModified);
+
+                sortedFiles.forEach(obj => {
+                    const fileUrl = `https://api-storage.azura.io.vn/${bucketName}/${obj.Key}`;
+                    const ext = obj.Key.split('.').pop().toLowerCase();
+                    const isImg = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext);
+
+                    let icon = '📄';
+                    if (isImg) icon = '🖼️';
+                    else if (['mp4', 'mov', 'webm', 'avi'].includes(ext)) icon = '🎬';
+                    else if (['pdf', 'doc', 'docx', 'txt'].includes(ext)) icon = '📋';
+                    else if (['zip', 'rar', 'tar', 'gz'].includes(ext)) icon = '📦';
+
+                    let visual = isImg
+                        ? `<div class="object-thumb" style="background-image: url('${fileUrl}')"></div>`
+                        : `<div class="object-icon">${icon}</div>`;
+
+                    html += `
+                        <a href="${fileUrl}" target="_blank" class="object-card">
+                            ${visual}
+                            <div class="object-name" title="${obj.Key}">${obj.Key}</div>
+                            <div class="object-size">${(obj.Size / 1024).toFixed(1)} KB</div>
+                        </a>
+                    `;
+                });
+                gridEl.innerHTML = html;
+            });
+        }
+
+        function uploadToMinIO() {
+            const fileInput = document.getElementById('file-upload');
+            const files = fileInput.files;
+            const statusText = document.getElementById('upload-status');
+            const bucketName = document.getElementById('bucket-name').value.trim();
+
+            if (!files.length) {
+                statusText.innerHTML = '<span style="color: #ef4444;">Vui lòng chọn Tệp trước!</span>';
+                return;
+            }
+            if (!bucketName) {
+                statusText.innerHTML = '<span style="color: #ef4444;">Vui lòng nhập tên Bucket!</span>';
+                return;
+            }
+
+            const file = files[0];
+            const fileName = 'demo-' + Date.now() + '-' + file.name.replace(/\s+/g, '-');
+
+            statusText.innerHTML = '<span style="color: #60a5fa;">Tiến trình tải dữ liệu lên phân vùng mạng MinIO đang được thực thi... </span>';
+
+            s3.putObject({
+                Bucket: bucketName,
+                Key: fileName,
+                Body: file,
+                ContentType: file.type
+            }, function (err, data) {
+                if (err) {
+                    console.error("Lỗi S3:", err);
+                    statusText.innerHTML = `<span style="color: #ef4444;">Báo cáo lỗi truyền tải định dạng: ${err.message}</span>`;
+                } else {
+                    statusText.innerHTML = `<span style="color: #10b981;">Xác nhận luồng tệp tin '${fileName}' điều phối lưu trữ thành công trực tuyến!</span>`;
+                    fileInput.value = '';
+                    document.getElementById('file-name').innerText = 'Chưa chọn tệp';
+                    queryBucket();
+                }
+            });
+        }
+
+        // ---------- KEYCLOAK OAuth2 IMPLICIT FLOW (Thủ công - Không XHR) ----------
+        // Cấu hình tham số kết nối Keycloak
+        const KC_URL = 'https://auth.azura.io.vn';
+        const KC_REALM = 'blog_admin_realm';
+        const KC_CLIENT_ID = 'c1-blog-client';
+        const KC_REDIRECT_URI = window.location.origin + window.location.pathname;
+
+        /**
+         * Phân tích cú pháp URL Hash Fragment để trích xuất Access Token.
+         * Sau khi Keycloak xác thực => Redirect về Blog kèm #access_token=xxx&token_type=bearer...
+         * Hàm này bóc tách chuỗi Hash thành Object key-value.
+         */
+        function parseHashFragment() {
+            const hash = window.location.hash.substring(1); // Bỏ dấu #
+            if (!hash) return null;
+            const params = {};
+            hash.split('&').forEach(function (part) {
+                const [key, val] = part.split('=');
+                params[decodeURIComponent(key)] = decodeURIComponent(val || '');
+            });
+            return params.access_token ? params : null;
+        }
+
+        /**
+         * Giải mã JWT Token (Base64URL) để đọc thông tin người dùng.
+         * Trích xuất trường preferred_username hoặc email.
+         */
+        function decodeJWT(token) {
+            try {
+                const payload = token.split('.')[1];
+                const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+                return JSON.parse(decoded);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        /**
+         * Kiểm tra trạng thái xác thực khi trang được tải.
+         * Nếu URL chứa #access_token => Người dùng vừa đăng nhập thành công từ Keycloak.
+         */
+        function initKeycloak() {
+            const authStatus = document.getElementById('auth-status');
+            const tokenData = parseHashFragment();
+
+            if (tokenData && tokenData.access_token) {
+                // Đăng nhập thành công: Bóc tách Token từ URL Hash
+                const userInfo = decodeJWT(tokenData.access_token);
+                const username = userInfo ? (userInfo.preferred_username || userInfo.email || 'Admin') : 'Admin';
+
+                // Mở khóa khu vực Upload
+                document.getElementById('upload-auth-section').style.display = 'none';
+                document.getElementById('upload-container').style.display = 'block';
+
+                // Xóa Hash khỏi URL cho sạch sẽ (không để lộ Token trên thanh địa chỉ)
+                history.replaceState(null, '', window.location.pathname);
+
+                console.log('✅ Keycloak SSO thành công. User:', username);
+                console.log('Token payload:', userInfo);
+            } else if (window.location.hash.includes('error=')) {
+                authStatus.innerHTML = '<span style="color: #ef4444;">❌ Keycloak từ chối xác thực. Kiểm tra lại cấu hình Client.</span>';
+            }
+        }
+
+        /**
+         * Chuyển hướng người dùng sang trang đăng nhập Keycloak.
+         * Sử dụng OAuth2 Implicit Flow: response_type=token
+         * => Keycloak trả access_token trực tiếp trên URL Hash, không cần XHR.
+         */
+        function loginWithKeycloak() {
+            const authUrl = KC_URL + '/realms/' + KC_REALM + '/protocol/openid-connect/auth'
+                + '?client_id=' + encodeURIComponent(KC_CLIENT_ID)
+                + '&redirect_uri=' + encodeURIComponent(KC_REDIRECT_URI)
+                + '&response_type=token'
+                + '&scope=openid'
+                + '&nonce=' + Math.random().toString(36).substring(2);
+            window.location.href = authUrl;
+        }
+
+        // ---------- IMAGE MODAL LOGIC ----------
+        function closeImageModal() {
+            document.getElementById('img-preview-modal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('img-preview-modal');
+            const modalImg = document.getElementById('modal-preview-img');
+
+            // Tìm tất cả các ảnh nằm trong các class placeholder để gắn click
+            const previewImages = document.querySelectorAll('.placeholder-large img, .placeholder-small img');
+            previewImages.forEach(img => {
+                // Ignore empty / broken src
+                if (img.src) {
+                    img.addEventListener('click', function () {
+                        modal.style.display = 'flex';
+                        modalImg.src = this.src;
+                    });
+                }
+            });
+        });
+
+        window.onload = function () {
+            queryBucket();
+            initKeycloak();
+        }
+    </script>
 </body>
+
 </html>

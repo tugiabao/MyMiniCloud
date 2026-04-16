@@ -1,6 +1,7 @@
 services:
   # --- c6: DNS Server ---
   c6:
+    image: baobao04/myminicloud-c6:latest
     build: ./c6-dns
     container_name: c6
     restart: always
@@ -29,6 +30,7 @@ services:
 
   # --- c1-sa-web: Web Server (React + Vite, Smart Aquarium Frontend) ---
   c1-sa-web:
+    image: baobao04/myminicloud-c1-sa-web:latest
     build:
       context: ./c1-sa-web
       args:
@@ -45,6 +47,7 @@ services:
 
   # --- c1-blog: Blog cá nhân (Static Site) ---
   c1-blog:
+    image: baobao04/myminicloud-c1-blog:latest
     build: ./c1-blog
     container_name: c1-blog
     restart: always
@@ -58,6 +61,7 @@ services:
 
   # --- c2-sa-api: Application Server (NestJS, Smart Aquarium Backend) ---
   c2-sa-api:
+    image: baobao04/myminicloud-c2-sa-api:latest
     build: ./c2-sa-api
     container_name: c2-sa-api
     restart: always
@@ -195,6 +199,7 @@ services:
 
   # --- c9: Reverse Proxy ---
   c9:
+    image: baobao04/myminicloud-c9:latest
     build: ./c9-proxy
     container_name: c9
     restart: always
