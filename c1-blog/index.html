@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M50 44H18a14 14 0 0 1-1.5-27.9A18 18 0 0 1 52 22a12 12 0 0 1-2 22z'/%3E%3C/svg%3E">
 </head>
 
 <body>
@@ -828,7 +829,8 @@ docker ps -a</code></pre>
                         <div id="upload-container" style="display: none;">
                             <p style="margin-bottom: 15px; color: #10b981; font-size: 14px; text-align: left;">
                                 <strong>Bước 2 (Khả dụng):</strong> Chỉ định vị trí cấp phát File lên cơ sở dữ liệu
-                                Bucket hiện tại.</p>
+                                Bucket hiện tại.
+                            </p>
                             <div class="upload-controls">
                                 <label class="custom-file-upload">
                                     <input type="file" id="file-upload"
@@ -930,26 +932,40 @@ docker ps -a</code></pre>
                 <!-- THÔNG TIN THÀNH VIÊN -->
                 <h3 style="margin-top: 40px;">Đội ngũ Thực hiện</h3>
                 <div class="member-grid">
+                    <!-- THÀNH VIÊN 1 -->
                     <div class="member-card">
                         <div class="avatar-frame">
-                            <img src=""
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="avatar-placeholder" style="display: none;">[Ảnh Thành Viên 1]</div>
+                            <div class="avatar-placeholder">👤</div>
                         </div>
-                        <div class="member-info">
-                            <input type="text" placeholder="Nhập tên TV 1..." value="">
-                            <input type="text" class="role-input" placeholder="MSSV - Vai trò...">
+                        <div class="member-name">Trương Nguyên Bảo</div>
+                        <div class="member-id">522H0000</div>
+                        <div class="member-role">⚙️ Computer Science</div>
+                        <div class="member-divider"></div>
+                        <div class="member-tech">
+                            <span>NestJS</span>
+                            <span>React</span>
+                            <span>MinIO S3</span>
+                            <span>Keycloak</span>
+                            <span>Grafana</span>
                         </div>
                     </div>
+                    <!-- THÀNH VIÊN 2 -->
                     <div class="member-card">
                         <div class="avatar-frame">
-                            <img src=""
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="avatar-placeholder" style="display: none;">[Ảnh Thành Viên 2]</div>
+                            <img src="https://api-storage.azura.io.vn/blog-images/demo-1776359063316-z7733409324093_5d6030700df7f405436cfd5157067b98.jpg"
+                                onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-placeholder').style.display='flex';">
+                            <div class="avatar-placeholder" style="display:none;">👤</div>
                         </div>
-                        <div class="member-info">
-                            <input type="text" placeholder="Nhập tên TV 2..." value="">
-                            <input type="text" class="role-input" placeholder="MSSV - Vai trò...">
+                        <div class="member-name">Từ Gia Bảo</div>
+                        <div class="member-id">522H0087</div>
+                        <div class="member-role">💻 Software Engineer</div>
+                        <div class="member-divider"></div>
+                        <div class="member-tech">
+                            <span>Docker</span>
+                            <span>Nginx</span>
+                            <span>Oracle Cloud</span>
+                            <span>DNS</span>
+                            <span>Networking</span>
                         </div>
                     </div>
                 </div>
