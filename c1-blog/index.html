@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M50 44H18a14 14 0 0 1-1.5-27.9A18 18 0 0 1 52 22a12 12 0 0 1-2 22z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M50 44H18a14 14 0 0 1-1.5-27.9A18 18 0 0 1 52 22a12 12 0 0 1-2 22z'/%3E%3C/svg%3E">
 </head>
 
 <body>
@@ -22,14 +23,20 @@
                     <span class="logo-icon">☁️</span>
                     <span class="logo-text">MyMiniCloud</span>
                 </a>
-                <nav class="nav">
-                    <a href="#chuong1">C1. Giới thiệu</a>
-                    <a href="#chuong2">C2. Kiến trúc</a>
-                    <a href="#chuong3">C3. Cấu hình</a>
-                    <a href="#chuong4">C4. Demo</a>
-                    <a href="#chuong5">C5. Đánh giá</a>
+                <nav class="nav" id="main-nav">
+                    <a href="#chuong1">Giới thiệu</a>
+                    <a href="#chuong2">Kiến trúc</a>
+                    <a href="#chuong3">Cấu hình</a>
+                    <a href="#chuong4">Demo</a>
+                    <a href="#chuong5">Đánh giá</a>
                     <a href="#phuluc">Phụ Lục</a>
                 </nav>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Chuyển đổi Sáng/Tối"
+                        id="theme-btn">🌙</button>
+                    <button class="menu-toggle" onclick="document.getElementById('main-nav').classList.toggle('open')"
+                        aria-label="Menu">☰</button>
+                </div>
             </div>
         </div>
     </header>
@@ -37,8 +44,8 @@
     <!-- ===== HERO ===== -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">🎓 Báo Cáo Luận Văn Khoa Học</div>
-            <h1>Báo cáo Kỹ thuật MyMiniCloud</h1>
+            <div class="hero-badge">🎓 Báo Cáo Đồ Án</div>
+            <h1>MyMiniCloud Project</h1>
             <p class="hero-subtitle">Mô phỏng kiến trúc Microservices & Object Storage trên Môi trường Điện toán Đám mây
             </p>
         </div>
@@ -71,7 +78,7 @@
                         </h4>
                         <p style="margin-bottom: 16px;">Nền tảng Cloud hàng đầu với hệ sinh thái dịch vụ đa dạng. Tuy
                             nhiên, mức độ phân bổ tài nguyên cho tầng miễn phí (Free Tier) tương đối hạn chế:</p>
-                        <ul style="color: #bbb; padding-left: 20px;">
+                        <ul style="padding-left: 20px;">
                             <li><strong>CPU:</strong> 1 vCPU (Instance t2.micro)</li>
                             <li><strong>RAM:</strong> Tối đa dung lượng 1 GB</li>
                         </ul>
@@ -83,7 +90,7 @@
                         </h4>
                         <p style="margin-bottom: 16px;">Nhà cung cấp triển khai chương trình Always Free với cấu trúc
                             tài nguyên tối ưu cao, tạo điều kiện thuận lợi làm môi trường triển khai thực nghiệm:</p>
-                        <ul style="color: #bbb; padding-left: 20px;">
+                        <ul style="padding-left: 20px;">
                             <li><strong>CPU:</strong> 4 oCPU (kiến trúc ARM) hiệu năng tiêu chuẩn</li>
                             <li><strong>RAM:</strong> Khối lượng cấp phát tối đa lên tới 24 GB</li>
                         </ul>
@@ -237,36 +244,36 @@
                 <div class="flow" style="margin-top: 32px;">
                     <div class="flow-step">
                         <div class="flow-num">1</div>
-                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
-                            <strong style="color: #fff; font-size: 15px;">Người sử dụng</strong>
-                            <div style="font-size: 13px; margin-top: 6px;">Truy vấn giao thức HTTPS để lấy tài nguyên
+                        <div class="flow-desc">
+                            <strong class="flow-title">Người sử dụng</strong>
+                            <div class="flow-detail">Truy vấn giao thức HTTPS để lấy tài nguyên
                                 (Interface/Data)</div>
                         </div>
                     </div>
                     <div class="flow-arrow">→</div>
                     <div class="flow-step">
                         <div class="flow-num" style="background: linear-gradient(135deg, #f59e0b, #d97706);">2</div>
-                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
-                            <strong style="color: #fff; font-size: 15px;">C10 (Tunnel)</strong>
-                            <div style="font-size: 13px; margin-top: 6px;">Xác lập đường hầm truyền dẫn giao tiếp với
+                        <div class="flow-desc">
+                            <strong class="flow-title">C10 (Tunnel)</strong>
+                            <div class="flow-detail">Xác lập đường hầm truyền dẫn giao tiếp với
                                 Host</div>
                         </div>
                     </div>
                     <div class="flow-arrow">→</div>
                     <div class="flow-step">
                         <div class="flow-num" style="background: linear-gradient(135deg, #10b981, #059669);">3</div>
-                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
-                            <strong style="color: #fff; font-size: 15px;">C9 (Nginx)</strong>
-                            <div style="font-size: 13px; margin-top: 6px;">Phân giải qua C6 (DNS) nhằm thực thi Cân Bằng
+                        <div class="flow-desc">
+                            <strong class="flow-title">C9 (Nginx)</strong>
+                            <div class="flow-detail">Phân giải qua C6 (DNS) nhằm thực thi Cân Bằng
                                 Tải</div>
                         </div>
                     </div>
                     <div class="flow-arrow">→</div>
                     <div class="flow-step">
                         <div class="flow-num" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">4</div>
-                        <div class="flow-desc" style="color: #bbb; line-height: 1.4;">
-                            <strong style="color: #fff; font-size: 15px;">Microservices</strong>
-                            <div style="font-size: 13px; margin-top: 6px;">Phân phối yêu cầu đến nhóm C1 (Web), C2
+                        <div class="flow-desc">
+                            <strong class="flow-title">Microservices</strong>
+                            <div class="flow-detail">Phân phối yêu cầu đến nhóm C1 (Web), C2
                                 (API), hoặc C5</div>
                         </div>
                     </div>
@@ -758,7 +765,7 @@ docker ps -a</code></pre>
 
                 <h3>7. Tầng Quan trắc và Đánh giá luồng dữ liệu Metrics (C7 & C8)</h3>
                 <p>Liên kết truyền dẫn kép: Prometheus xử lý khai thác chỉ số phần cứng vi thông (RAM, CPU, Cache) dựa
-                    trên cAdvisor, phục vụ cho giao diện biểu đồ định dạng đồ họa Grafana thể hiện giám sát quá tải thời
+                    trên cadvisor, phục vụ cho giao diện biểu đồ định dạng đồ họa Grafana thể hiện giám sát quá tải thời
                     gian thực.</p>
                 <div class="placeholder-large"
                     style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); padding: 30px;">
@@ -935,10 +942,12 @@ docker ps -a</code></pre>
                     <!-- THÀNH VIÊN 1 -->
                     <div class="member-card">
                         <div class="avatar-frame">
-                            <div class="avatar-placeholder">👤</div>
+                            <img src="https://api-storage.azura.io.vn/blog-images/demo-1776390103840-unnamed.png"
+                                onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-placeholder').style.display='flex';">
+                            <div class="avatar-placeholder" style="display:none;">👤</div>
                         </div>
                         <div class="member-name">Trương Nguyên Bảo</div>
-                        <div class="member-id">522H0000</div>
+                        <div class="member-id">522H0166</div>
                         <div class="member-role">⚙️ Computer Science</div>
                         <div class="member-divider"></div>
                         <div class="member-tech">
@@ -1195,9 +1204,39 @@ docker ps -a</code></pre>
             });
         });
 
+        // ---------- THEME TOGGLE ----------
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('theme-btn');
+            if (html.getAttribute('data-theme') === 'light') {
+                html.removeAttribute('data-theme');
+                btn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                btn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        // Khôi phục theme đã lưu
+        (function () {
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.getElementById('theme-btn').textContent = '☀️';
+                });
+            }
+        })();
+
         window.onload = function () {
             queryBucket();
             initKeycloak();
+            // Tự đóng menu mobile khi bấm link
+            document.querySelectorAll('.nav a').forEach(function (a) {
+                a.addEventListener('click', function () {
+                    document.getElementById('main-nav').classList.remove('open');
+                });
+            });
         }
     </script>
 </body>
