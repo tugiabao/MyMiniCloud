@@ -1,67 +1,84 @@
-# ☁️ MyMiniCloud: Microservices Infrastructure Simulation
+# ☁️ MyMiniCloud: Private Microservices Infrastructure
 
-**MyMiniCloud** là một dự án mô phỏng hệ sinh thái điện toán đám mây thu nhỏ (Mini Cloud Platform) dựa trên công nghệ **Docker**. Mục tiêu của dự án là xây dựng một hạ tầng hoàn chỉnh gồm 9 loại dịch vụ cốt lõi, mô phỏng cách các nền tảng lớn như AWS, Azure hay GCP vận hành.
+**MyMiniCloud** là một dự án nghiên cứu và triển khai hệ sinh thái điện toán đám mây riêng biệt (Private Cloud Platform) dựa trên kiến trúc **Microservices** và công nghệ **Docker**. Dự án đóng vai trò là hạ tầng xương sống mạnh mẽ để vận hành ứng dụng lõi **Smart Aquarium (SA)** - hệ thống quản lý bể cá thông minh tích hợp IoT và AI.
 
----
-
-## 🏗 Kiến trúc tổng thể (Architecture)
-
-Dự án được chia thành 3 nhóm chức năng chính, kết nối thông qua mạng ảo nội bộ **`cloud-net`**:
-
-### 1. Nhóm Frontend (FE)
-* **c1 (Web Server):** Triển khai giao diện người dùng (Nginx/React/Vue).
-
-### 2. Nhóm Backend (BE) - Hệ thống xử lý trung tâm
-* **c2 (Application Server):** Xử lý logic nghiệp vụ & API (Python Flask/FastAPI).
-* **c3 (Database Server):** Lưu trữ dữ liệu có cấu trúc (PostgreSQL/MySQL).
-* **c4 (Authentication Server):** Quản lý định danh, Token và đăng nhập (Keycloak/Custom).
-* **c5 (File/Object Storage):** Lưu trữ tài nguyên tĩnh, hình ảnh, video (MinIO).
-
-### 3. Nhóm Quản trị & Giám sát (Infra & Ops)
-* **c6 (DNS / Name Service):** Điều hướng và ánh xạ tên miền nội bộ.
-* **c7 (Monitoring Server):** Theo dõi hiệu năng CPU, RAM, Network (Prometheus).
-* **c8 (Logging / Visualization):** Thu thập nhật ký hệ thống và trực quan hóa biểu đồ (Grafana/Loki).
-* **c9 (Reverse Proxy / Load Balancer):** Cửa ngõ duy nhất tiếp nhận yêu cầu và điều phối tải (Nginx).
+Hệ thống được thiết kế theo tiêu chuẩn công nghiệp với khả năng định tuyến nội bộ, cân bằng tải, bảo mật định danh tập trung (SSO) và quan trắc hệ thống theo thời gian thực (Real-time Observability). Hiện tại, dự án đang được triển khai thực tế trên nền tảng **Oracle Cloud Infrastructure (ARM 4-Core, 24GB RAM)**.
 
 ---
 
-## 🚀 Các tính năng cốt lõi
+## 🏗 Kiến trúc Tổng thể (Architecture)
 
-* **Infrastructure as Code (IaC):** Toàn bộ 9 container được quản lý tập trung qua `docker-compose.yml`.
-* **Database Migration:** Sử dụng **Alembic** để quản lý phiên bản cơ sở dữ liệu, đảm bảo tính linh hoạt và an toàn khi thay đổi schema.
-* **Service Discovery:** Các dịch vụ liên lạc nội bộ qua công thức `Tên_Container:Cổng_Dịch_Vụ` nhờ mạng `cloud-net`.
-* **Cloud-ception:** Mô hình "Cloud lồng Cloud" có thể triển khai mượt mà từ môi trường Local lên AWS EC2.
+Hệ thống bao gồm 13+ dịch vụ (Containers) được đóng gói và vận hành hoàn toàn độc lập, giao tiếp với nhau qua mạng ảo nội bộ `cloud-net`:
+
+### 🖥 Lớp Giao diện & Ứng dụng (Frontend & Backend)
+* **c1-blog:** Trang báo cáo và tài liệu dự án tĩnh (HTML/CSS/JS thuần).
+* **c1-sa-web:** Giao diện người dùng Web App cho Smart Aquarium (ReactJS + Vite + TypeScript).
+* **c2-sa-api (x3 Nodes):** Cụm máy chủ xử lý logic nghiệp vụ và tương tác phần cứng IoT (NestJS + TypeScript). Được cấu hình Cân bằng tải (Load Balancing) thành 3 instance trên môi trường Production.
+
+### 💾 Lớp Dữ liệu & Lưu trữ (Data Layer)
+* **c3 (PostgreSQL):** Cơ sở dữ liệu quan hệ lưu trữ dữ liệu nghiệp vụ và thông tin người dùng.
+* **c3-dbview (CloudBeaver):** Giao diện quản trị Database trực quan trên nền Web.
+* **c5 (MinIO):** Kho lưu trữ đối tượng phi cấu trúc (Object Storage) tương thích chuẩn S3, chuyên lưu trữ hình ảnh/video từ camera bể cá.
+
+### 🔐 Lớp Mạng & Bảo mật (Networking & Security)
+* **c4 (Keycloak):** Máy chủ định danh tập trung, quản lý bảo mật OAuth2/OIDC và cấp phát Access Token (JWT).
+* **c6 (BIND9 DNS):** Máy chủ phân giải tên miền nội bộ (Local DNS), giúp các container giao tiếp qua định danh thay vì IP thô.
+* **c9 (Nginx Proxy):** Cửa ngõ Reverse Proxy trung tâm tiếp nhận yêu cầu, phân giải SSL nội bộ và điều hướng luồng dữ liệu.
+* **c10 (Cloudflare Tunnel):** Đường hầm bảo mật Zero-trust mã hóa lưu lượng từ ngoài Internet vào thẳng hệ thống không cần mở cổng.
+
+### 📈 Lớp Giám sát Hệ thống (Observability)
+* **c7 (Prometheus):** Máy chủ cào và lưu trữ dữ liệu chuỗi thời gian (Time-series DB).
+* **c8 (Grafana):** Bảng điều khiển trực quan hóa biểu đồ theo dõi hiệu năng.
+* **cadvisor:** Đặc vụ giám sát tài nguyên (CPU, RAM, Disk) ở cấp độ container.
 
 ---
 
-## 🛠 Hướng dẫn triển khai (Local)
+## 🚀 Các Tính năng Kỹ thuật Cốt lõi
 
-### 1. Yêu cầu hệ thống
+1. **Multi-stage Build:** Tối ưu hóa kích thước Docker Image (Giảm từ hàng GB xuống vài chục MB cho Frontend).
+2. **Dynamic Configuration:** Tách biệt cấu hình môi trường qua file `.env`, giúp dễ dàng di chuyển giữa Local và Cloud.
+3. **Internal Service Discovery:** Giao tiếp nội container hoàn toàn bằng tên miền `.myminicloud.local` qua Local DNS.
+4. **Zero-Downtime Scaling:** Khả năng nhân bản (Scale) Backend API thành nhiều Node thông qua `docker-compose.override.yml`.
+
+---
+
+## 🛠 Hướng dẫn Khởi chạy Hệ thống
+
+### Yêu cầu Hệ thống
 * Đã cài đặt **Docker** và **Docker Compose**.
-* Đã cấu hình **Git**.
-* RAM khuyến nghị: 8GB+.
+* Khuyến nghị: RAM tối thiểu 8GB (Môi trường Local) hoặc chạy trên Server mạnh.
 
-### 2. Khởi chạy hệ thống
-1.  Clone dự án:
+### Quy trình Khởi tạo
+1. **Clone dự án:**
     ```bash
     git clone https://github.com/tugiabao/MyMiniCloud.git
     cd MyMiniCloud
     ```
-2.  Cấu hình biến môi trường:
+2. **Cấu hình biến môi trường:**
     ```bash
-    # Tạo file .env từ file mẫu và chỉnh sửa mật khẩu
+    # Sao chép file cấu hình mẫu và điền các mật khẩu/IP cần thiết
     cp .env.example .env 
     ```
-3.  Bật toàn bộ 9 container:
+3. **Cấp quyền cho thư mục dữ liệu (Dành cho Linux/Server):**
     ```bash
-    docker-compose up -d
+    mkdir -p ./c7-monitor/data ./c8-logging/data
+    sudo chmod -R 777 ./c7-monitor/data ./c8-logging/data
+    ```
+4. **Khởi chạy hệ thống:**
+    ```bash
+    # Dưới máy Local
+    docker compose up -d --build
+    
+    # Trên môi trường Cloud (Oracle) có cấu hình Override
+    docker compose -f docker-compose.yml -f docker-compose.override.yml up -d --build
     ```
 
-### 3. Quản lý Database Migration
-Khi có sự thay đổi trong `models.py` (c2), hãy chạy các lệnh sau:
-```bash
-# Tạo bản migration mới
-docker-compose exec c2-app alembic revision --autogenerate -m "Mô tả thay đổi"
+---
 
-# Cập nhật cấu trúc vào Database (c3)
-docker-compose exec c2-app alembic upgrade head
+## 🌐 Liên kết Dự án
+
+* 📖 **Trang Blog Giới thiệu:** [https://blog.azura.io.vn](https://blog.azura.io.vn)
+* 🐳 **Docker Hub:** [baobao04](https://hub.docker.com/u/baobao04)
+
+---
+*Dự án đồ án sinh viên - Quản trị hệ thống & Điện toán đám mây.*

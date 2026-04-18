@@ -109,7 +109,7 @@ echo ""
 ALIVE_NAMES=("c2-sa-api" "c2-api-1" "c2-api-3")
 TOTAL2=0
 for name in "${ALIVE_NAMES[@]}"; do
-    COUNT=$(docker logs "$name" --since 15s 2>&1 | grep -c "GET /health")
+    COUNT=$(docker logs "$name" --since 45s 2>&1 | grep -c "GET /health")
     TOTAL2=$((TOTAL2 + COUNT))
     BAR=$(printf '█%.0s' $(seq 1 $((COUNT / 2 + 1))))
     printf "  %-12s │ %3d requests │ %s\n" "$name" "$COUNT" "$BAR"
