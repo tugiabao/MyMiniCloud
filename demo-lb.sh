@@ -93,6 +93,7 @@ echo "    c2-api-2     ❌ OFFLINE"
 echo ""
 
 echo "  ⏱️  Gửi thêm $TOTAL_REQUESTS request qua Nginx..."
+PHASE2_START=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 for i in $(seq 1 $TOTAL_REQUESTS); do
     curl -s -H "$HOST_HEADER" "$NGINX_URL/health?ft=$i" > /dev/null &
     if (( i % 10 == 0 )); then
@@ -109,7 +110,7 @@ echo ""
 ALIVE_NAMES=("c2-sa-api" "c2-api-1" "c2-api-3")
 TOTAL2=0
 for name in "${ALIVE_NAMES[@]}"; do
-    COUNT=$(docker logs "$name" --since 15s 2>&1 | grep -c "GET /health")
+    COUNT=$(docker logs "$name" --since "$PHASE2_START" 2>&1 | grep -c "GET /health")
     TOTAL2=$((TOTAL2 + COUNT))
     BAR=$(printf '█%.0s' $(seq 1 $((COUNT / 2 + 1))))
     printf "  %-12s │ %3d requests │ %s\n" "$name" "$COUNT" "$BAR"

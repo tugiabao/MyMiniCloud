@@ -778,7 +778,7 @@ docker ps -a</code></pre>
                     đổi cơ sở phân tải giữa 3 cụm máy con và tiếp nhận nguyên vẹn giá trị IP thực của người sử dụng
                     thông qua chuẩn X-Real-IP.</p>
                 <div class="placeholder-large" style="margin-bottom: 48px; padding: 40px;">
-                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776332875778-Screenshot-2026-04-16-164646.png"
+                    <img src="https://api-storage.azura.io.vn/blog-images/demo-1776490510082-Screenshot-2026-04-18-123300.png"
                         alt="Load Balancer">
                 </div>
 
@@ -883,15 +883,15 @@ docker ps -a</code></pre>
                 <ul>
                     <li>Đảm bảo tính toàn vẹn và quyền tự chủ dữ liệu lưu trữ nội bộ thông qua mô hình Self-hosted
                         Cloud.</li>
-                    <li>Tối ưu hóa khả năng triển khai liên nền tảng thông qua bộ mã lệnh IaC (Docker Compose).</li>
-                    <li>Tích hợp giao thức Cloudflare Tunnel nhằm vượt tường lửa NAT tĩnh, định tuyến Load Balancing
-                        mạng nội mạng hạn chế chi phí vận hành public IP.</li>
+                    <li>Tối ưu hóa khả năng triển khai trên nhiều nền tảng khác nhau nhờ Docker.</li>
+                    <li>Tích hợp giao thức Cloudflare Tunnel nhằm vượt tường lửa NAT tĩnh, gắn domain cá nhân và
+                        định tuyến Load Balancing mạng nội mạng hạn chế chi phí vận hành public IP.</li>
                 </ul>
 
                 <h3>Khó khăn & Thách thức kỹ thuật</h3>
                 <ul>
                     <li>Quy trình cấp phát IP tĩnh trên nhiều node máy chủ ảo đòi hỏi giám sát bộ định tuyến mạng liên
-                        tục, tiềm ẩn nguy cơ xung đột Default Gateway.</li>
+                        tục, tiềm ẩn nguy cơ xung đột.</li>
                     <li>Kiến trúc phức hợp yêu cầu mức độ tiêu thụ RAM cơ bản đáng kể (tối ưu đánh giá ở mức Oracle 4
                         CPU 24 GB) để duy trì tiến trình chạy ngầm đồng thời của Grafana, MinIO và hệ thống Java
                         Keycloak SSO.</li>
@@ -899,12 +899,10 @@ docker ps -a</code></pre>
 
                 <h3>Hướng mở rộng thực tiễn</h3>
                 <ul>
-                    <li>Nghiên cứu cơ chế tích hợp khối xử lý học máy (AI Engine) trực tiếp tại tầng Backend phục vụ quy
-                        trình đánh giá rủi ro và trả về cảnh báo tự động hóa thay tác vụ thủ công.</li>
-                    <li>Áp dụng Kubernetes để Orchestrate vòng đời cụm Cluster thay cho Docker Compose cục bộ, từ đó mở
-                        rộng hiệu năng (Auto-Scaling) đáp ứng tải trọng cao.</li>
-                    <li>Phân giải Webhook từ Grafana đồng bộ sang Telegram nhằm thiết lập hệ thống cảnh báo tin nhắn
-                        thời gian thực khi tải trọng máy chủ phản hồi trạng thái trễ (Latency).</li>
+                    <li>Nghiên cứu triển khai khối xử lý học máy (AI Engine) và khối triển khai stream lên hạ tầng để
+                        phụ vụ cho dự án SA.</li>
+                    <li>Sử dụng Webhook từ Grafana nhằm thiết lập hệ thống cảnh báo tin nhắn
+                        thời gian thực khi tải trọng máy chủ gặp sự cố hoặc quá tải.</li>
                 </ul>
             </div>
         </div>
@@ -934,6 +932,10 @@ docker ps -a</code></pre>
                             target="_blank">https://github.com/tugiabao/MyMiniCloud</a></li>
                     <li><strong>Docker Hub:</strong> <a href="https://hub.docker.com/u/baobao04"
                             target="_blank">https://hub.docker.com/u/baobao04</a></li>
+                    <li><strong>Project report:</strong> <a
+                            href="https://api-storage.azura.io.vn/public-documents/demo-1776486206802-Cloud_Report_522H0166_522H0087.pdf"
+                            target="_blank">Click here</a>
+                    </li>
                 </ul>
 
                 <!-- THÔNG TIN THÀNH VIÊN -->
