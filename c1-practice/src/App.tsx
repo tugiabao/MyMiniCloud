@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Volume2, Languages, Loader2, Info, ChevronRight, Mic2, LogOut, Save, History as HistoryIcon, BookOpen, Trash2, Cpu, Zap, Pause } from 'lucide-react';
+import { Play, Volume2, Languages, Loader2, Info, ChevronRight, Mic2, LogOut, Save, History as HistoryIcon, BookOpen, Trash2, Cpu, Zap, Pause, RefreshCw } from 'lucide-react';
 import keycloak from './lib/keycloak';
 import { GoogleGenAI, Modality } from "@google/genai";
 import { playPCM } from './lib/audioPlayer';
