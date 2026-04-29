@@ -324,6 +324,20 @@ export default function App() {
     audio.play();
   }
 
+  function loadHistoryToPractice(item: any) {
+    setText(item.text);
+    setIpa(item.ipa || '');
+    if (item.analysis) {
+      setAnalysis(typeof item.analysis === 'string' ? JSON.parse(item.analysis) : item.analysis);
+    }
+    if (item.feedback) {
+      setFeedback(typeof item.feedback === 'string' ? JSON.parse(item.feedback) : item.feedback);
+    }
+    setLastBlob(null);
+    setActiveTab('reading');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function toggleLastRecording() {
     if (isPlayingLast) {
       if (audioRef.current) {
@@ -451,11 +465,15 @@ export default function App() {
                     key={item.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm hover:shadow-md transition-shadow relative group"
+                    onClick={() => loadHistoryToPractice(item)}
+                    className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all relative group cursor-pointer"
                   >
                     <button
-                      onClick={() => deleteHistoryItem(item.id)}
-                      className="absolute top-6 right-6 p-2 text-slate-300 hover:text-red-500 transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteHistoryItem(item.id);
+                      }}
+                      className="absolute top-6 right-6 p-2 text-slate-300 hover:text-red-500 transition-colors z-10"
                     >
                       <Trash2 size={18} />
                     </button>
@@ -475,23 +493,37 @@ export default function App() {
                             <p className="text-indigo-900/60 font-mono text-xs leading-relaxed">{item.ipa}</p>
                           </div>
                         )}
-                        {item.audio_key && (
+                        <div className="flex items-center gap-3 mt-4">
+                          {item.audio_key && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                playHistoryAudio(item.audio_key);
+                              }}
+                              disabled={playingHistoryKey === item.audio_key}
+                              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${playingHistoryKey === item.audio_key
+                                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-inner'
+                                  : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100'
+                                }`}
+                            >
+                              {playingHistoryKey === item.audio_key ? (
+                                <Loader2 size={14} className="animate-spin" />
+                              ) : (
+                                <Play size={14} fill="currentColor" />
+                              )}
+                              {playingHistoryKey === item.audio_key ? 'Playing...' : 'Play Recording'}
+                            </button>
+                          )}
                           <button
-                            onClick={() => playHistoryAudio(item.audio_key)}
-                            disabled={playingHistoryKey === item.audio_key}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all mt-4 ${playingHistoryKey === item.audio_key
-                                ? 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-inner'
-                                : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100'
-                              }`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                loadHistoryToPractice(item);
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-50 text-slate-600 border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-100 transition-all"
                           >
-                            {playingHistoryKey === item.audio_key ? (
-                              <Loader2 size={14} className="animate-spin" />
-                            ) : (
-                              <Play size={14} fill="currentColor" />
-                            )}
-                            {playingHistoryKey === item.audio_key ? 'Playing...' : 'Play Recording'}
+                            <RefreshCw size={14} /> Practice Again
                           </button>
-                        )}
+                        </div>
                       </div>
 
                       <div className="w-full lg:w-80 space-y-4">
