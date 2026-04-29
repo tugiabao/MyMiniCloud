@@ -36,3 +36,9 @@ build/
 
 # Docker Compose Override (Moi server co cau hinh rieng, khong day len Git)
 docker-compose.override.yml
+
+# --- c1-practice ---
+c1-practice/node_modules/
+c1-practice/dist/
+c1-practice/build/
+c1-practice/.env
