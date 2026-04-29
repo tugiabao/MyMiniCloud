@@ -18,6 +18,7 @@ services:
       - IP_C9=${IP_C9}
       - IP_C1_BLOG=${IP_C1_BLOG}
       - IP_CADVISOR=${IP_CADVISOR}
+      - IP_C1_PRACTICE=${IP_C1_PRACTICE}
     networks:
       cloud-net:
         ipv4_address: "${IP_C6}"
@@ -228,6 +229,38 @@ services:
     networks:
       cloud-net:
         ipv4_address: "${IP_C10}"
+
+  # --- c1-practice: AI Pronunciation Practice (React + Gemini AI) ---
+  c1-practice:
+    image: baobao04/myminicloud-c1-practice:latest
+    build:
+      context: ./c1-practice
+      args:
+        - GEMINI_API_KEY=${GEMINI_API_KEY}
+    container_name: c1-practice
+    restart: always
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DB_HOST=c3
+      - DB_NAME=myminicloud_db
+      - DB_USER=admin
+      - DB_PASSWORD=mysecretpassword
+      - MINIO_ENDPOINT=c5
+      - MINIO_ACCESS_KEY=${STORAGE_USER}
+      - MINIO_SECRET_KEY=${STORAGE_PASSWORD}
+      - PORT=3000
+    networks:
+      cloud-net:
+        ipv4_address: "${IP_C1_PRACTICE}"
+    dns:
+      - "${IP_C6}"
+    depends_on:
+      c6:
+        condition: service_healthy
+      c3:
+        condition: service_started
+      c5:
+        condition: service_started
 
   # --- cadvisor: Container Resource Monitor ---
   cadvisor:

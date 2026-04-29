@@ -21,6 +21,7 @@ c8      IN      A       ${IP_C8}
 c9      IN      A       ${IP_C9}
 c1-blog IN      A       ${IP_C1_BLOG}
 cadvisor IN     A       ${IP_CADVISOR}
+c1-practice IN A       ${IP_C1_PRACTICE}
 
 ; THÊM CÁC DÒNG NÀY ĐỂ nslookup db.myminicloud.local HOẠT ĐỘNG
 web     IN      CNAME   c1-sa-web
@@ -28,3 +29,4 @@ api     IN      CNAME   c2-sa-api
 db      IN      CNAME   c3
 auth    IN      CNAME   c4
 storage IN      CNAME   c5
+practice IN     CNAME   c1-practice

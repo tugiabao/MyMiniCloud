@@ -1,0 +1,6 @@
+{
+  "name": "English Pronunciation Master",
+  "description": "An AI-powered pronunciation guide that uses Gemini TTS to help users master English speech and phonetic structures.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": []
+}
