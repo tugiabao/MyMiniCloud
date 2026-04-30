@@ -391,15 +391,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-800 font-sans selection:bg-indigo-100 selection:text-indigo-900 pb-20">
       {/* Header */}
-      <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 px-10 py-4">
+      <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 px-4 md:px-10 py-3 md:py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
+            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white shrink-0">
               <Languages size={18} />
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-800">PronounceAI</h1>
+            <h1 className="text-lg md:text-xl font-bold tracking-tight text-slate-800 truncate">PronounceAI</h1>
           </div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 md:gap-8">
             <div className="hidden md:flex gap-6 text-sm font-medium text-slate-500">
               <button
                 onClick={() => setActiveTab('reading')}
@@ -415,16 +415,16 @@ export default function App() {
               </button>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden md:flex flex-col items-end">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Account</span>
-                <span className="text-xs font-bold text-slate-700">{keycloak.tokenParsed?.preferred_username || 'User'}</span>
+              <div className="hidden sm:flex flex-col items-end">
+                <span className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-wider">Account</span>
+                <span className="text-xs font-bold text-slate-700 max-w-[100px] truncate">{keycloak.tokenParsed?.preferred_username || 'User'}</span>
               </div>
               <button
                 onClick={() => keycloak.logout()}
-                className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+                className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors"
                 title="Logout"
               >
-                <LogOut size={18} />
+                <LogOut size={16} />
               </button>
             </div>
           </div>
@@ -473,16 +473,16 @@ export default function App() {
                         e.stopPropagation();
                         deleteHistoryItem(item.id);
                       }}
-                      className="absolute top-6 right-6 p-2 text-slate-300 hover:text-red-500 transition-colors z-10"
+                      className="absolute top-4 md:top-6 right-4 md:right-6 p-2 text-slate-300 hover:text-red-500 transition-colors z-10"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={16} />
                     </button>
 
-                    <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
                       <div className="flex-1 space-y-4">
-                        <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <div className="flex items-center gap-3 text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                           <BookOpen size={14} />
-                          <span>Session: {new Date(item.timestamp).toLocaleString()}</span>
+                          <span className="truncate">Session: {new Date(item.timestamp).toLocaleString()}</span>
                         </div>
                         <p className="text-slate-700 leading-relaxed line-clamp-3">
                           {item.text}
@@ -561,43 +561,42 @@ export default function App() {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Content Area */}
             <div className="flex-1 space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <h2 className="text-sm uppercase tracking-widest text-slate-400 font-bold">Active Passage</h2>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4">
+                  <h2 className="text-[9px] md:text-sm uppercase tracking-widest text-slate-400 font-bold">Active Passage</h2>
                   <button
                     onClick={saveToHistory}
-                    className="flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-full border border-indigo-100 hover:bg-indigo-100 transition-colors uppercase"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-full border border-indigo-100 hover:bg-indigo-100 transition-colors uppercase whitespace-nowrap"
                   >
-                    <Save size={12} /> Save Practice
+                    <Save size={12} /> Save
                   </button>
                   <button
                     onClick={() => setEvaluationMode(evaluationMode === 'ai' ? 'native' : 'ai')}
-                    className={`flex items-center gap-2 px-3 py-1 rounded-full border transition-all uppercase text-[10px] font-bold ${evaluationMode === 'ai'
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all uppercase text-[10px] font-bold whitespace-nowrap ${evaluationMode === 'ai'
                         ? 'bg-purple-50 text-purple-600 border-purple-100 hover:bg-purple-100'
                         : 'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100'
                       }`}
-                    title={evaluationMode === 'ai' ? "Using High-Accuracy Gemini AI" : "Using Browser-Native Recognition (Free)"}
                   >
                     {evaluationMode === 'ai' ? <Cpu size={12} /> : <Zap size={12} />}
-                    Mode: {evaluationMode.toUpperCase()}
+                    {evaluationMode.toUpperCase()}
                   </button>
                 </div>
-                <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-green-50 text-green-700 text-[10px] font-bold rounded-full border border-green-100 uppercase">Level: Intermediate</span>
-                  <span className="px-3 py-1 bg-slate-50 text-slate-600 text-[10px] font-bold rounded-full border border-slate-200 uppercase">{text.split(/\s+/).filter(Boolean).length} Words</span>
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <span className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-green-50 text-green-700 text-[10px] font-bold rounded-full border border-green-100 uppercase">Intermediate</span>
+                  <span className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-slate-50 text-slate-600 text-[10px] font-bold rounded-full border border-slate-200 uppercase">{text.split(/\s+/).filter(Boolean).length} Words</span>
                 </div>
               </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm group relative"
+                className="bg-white border border-slate-200 rounded-[24px] md:rounded-[32px] p-6 md:p-8 shadow-sm group relative"
               >
                 <textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   onBlur={() => generateAnalysis()}
-                  className="w-full h-80 p-0 bg-transparent border-none text-[28px] leading-[1.6] font-normal text-slate-700 resize-none outline-none placeholder:text-slate-200"
+                  className="w-full h-60 md:h-80 p-0 bg-transparent border-none text-[20px] md:text-[28px] leading-[1.6] font-normal text-slate-700 resize-none outline-none placeholder:text-slate-200"
                   placeholder="Paste your text here to practice..."
                 />
               </motion.div>
@@ -805,8 +804,8 @@ export default function App() {
         )}
       </main>
 
-      {/* Bottom Bar Footer */}
-      <footer className="fixed bottom-0 w-full h-12 px-10 flex items-center justify-between text-[10px] text-slate-400 bg-white border-t border-slate-100 uppercase tracking-widest font-bold z-40">
+      {/* Bottom Bar Footer (Desktop Only) */}
+      <footer className="fixed bottom-0 w-full h-12 px-10 hidden md:flex items-center justify-between text-[10px] text-slate-400 bg-white border-t border-slate-100 uppercase tracking-widest font-bold z-40">
         <span>Created by TGB- 934</span>
         <div className="flex gap-8">
           <button
@@ -817,6 +816,31 @@ export default function App() {
           </button>
         </div>
       </footer>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-slate-100 md:hidden z-50 flex items-center justify-around py-3 px-6 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
+        <button
+          onClick={() => setActiveTab('reading')}
+          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'reading' ? 'text-indigo-600' : 'text-slate-400'}`}
+        >
+          <BookOpen size={20} />
+          <span className="text-[10px] font-bold uppercase tracking-wider">Practice</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('history')}
+          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'history' ? 'text-indigo-600' : 'text-slate-400'}`}
+        >
+          <HistoryIcon size={20} />
+          <span className="text-[10px] font-bold uppercase tracking-wider">History</span>
+        </button>
+        <button
+          onClick={resetPractice}
+          className="flex flex-col items-center gap-1 text-slate-400 hover:text-red-500 transition-all"
+        >
+          <RefreshCw size={20} />
+          <span className="text-[10px] font-bold uppercase tracking-wider">Reset</span>
+        </button>
+      </nav>
     </div>
   );
 }
