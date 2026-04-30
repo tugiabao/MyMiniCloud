@@ -570,16 +570,24 @@ export default function App() {
                   >
                     <Save size={12} /> Save
                   </button>
-                  <button
-                    onClick={() => setEvaluationMode(evaluationMode === 'ai' ? 'native' : 'ai')}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all uppercase text-[10px] font-bold whitespace-nowrap ${evaluationMode === 'ai'
-                        ? 'bg-purple-50 text-purple-600 border-purple-100 hover:bg-purple-100'
-                        : 'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100'
-                      }`}
-                  >
-                    {evaluationMode === 'ai' ? <Cpu size={12} /> : <Zap size={12} />}
-                    {evaluationMode.toUpperCase()}
-                  </button>
+                  <div className="flex bg-slate-100 p-0.5 rounded-full border border-slate-200">
+                    <button
+                        onClick={() => setEvaluationMode('ai')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-bold transition-all uppercase ${evaluationMode === 'ai' 
+                            ? 'bg-purple-600 text-white shadow-md' 
+                            : 'text-slate-500 hover:text-slate-700'}`}
+                    >
+                        <Cpu size={10} /> AI Mode
+                    </button>
+                    <button
+                        onClick={() => setEvaluationMode('native')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-bold transition-all uppercase ${evaluationMode === 'native' 
+                            ? 'bg-amber-500 text-white shadow-md' 
+                            : 'text-slate-500 hover:text-slate-700'}`}
+                    >
+                        <Zap size={10} /> Native
+                    </button>
+                  </div>
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto">
                   <span className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-green-50 text-green-700 text-[10px] font-bold rounded-full border border-green-100 uppercase">Intermediate</span>
@@ -665,16 +673,23 @@ export default function App() {
                   </button>
                 )}
 
-                <button
-                  onClick={recording ? stopRecording : startRecording}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold shadow-lg transition-all uppercase text-xs tracking-wider ${recording
-                      ? 'bg-red-600 text-white shadow-red-100 hover:bg-red-700'
-                      : 'bg-indigo-600 text-white shadow-indigo-100 hover:bg-indigo-700'
-                    }`}
-                >
-                  <div className={`w-2 h-2 rounded-full ${recording ? 'bg-white animate-ping' : 'bg-white animate-pulse'}`}></div>
-                  {recording ? 'Stop & Evaluate' : 'Start Recording'}
-                </button>
+                <div className="flex flex-col items-center gap-2">
+                  <button
+                    onClick={recording ? stopRecording : startRecording}
+                    className={`flex items-center gap-3 px-6 py-3 rounded-full font-bold shadow-lg transition-all uppercase text-xs tracking-wider ${recording
+                        ? 'bg-red-600 text-white shadow-red-100 hover:bg-red-700'
+                        : evaluationMode === 'ai'
+                            ? 'bg-purple-600 text-white shadow-purple-100 hover:bg-purple-700'
+                            : 'bg-indigo-600 text-white shadow-indigo-100 hover:bg-indigo-700'
+                        }`}
+                  >
+                    <div className={`w-2 h-2 rounded-full ${recording ? 'bg-white animate-ping' : 'bg-white animate-pulse'}`}></div>
+                    {recording ? 'Stop & Evaluate' : `Start Recording (${evaluationMode.toUpperCase()})`}
+                  </button>
+                  <span className={`text-[8px] font-bold uppercase tracking-[0.2em] ${evaluationMode === 'ai' ? 'text-purple-400' : 'text-slate-400'}`}>
+                    {evaluationMode === 'ai' ? 'Using Gemini AI 1.5 Flash' : 'Using Web Speech API'}
+                  </span>
+                </div>
               </div>
 
               {/* Raw Transcription Section */}
@@ -772,6 +787,9 @@ export default function App() {
 
               {/* Score Card / Summary */}
               <div className="bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl shadow-slate-200">
+                <div className={`absolute top-0 right-0 px-3 py-1 text-[8px] font-bold uppercase tracking-widest ${evaluationMode === 'ai' ? 'bg-purple-600' : 'bg-amber-500'}`}>
+                   {evaluationMode === 'ai' ? 'AI Evaluation' : 'Native Engine'}
+                </div>
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-white opacity-5 rounded-full"></div>
                 <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pronunciation Score</h3>
                 <div className="mt-4 flex items-baseline gap-1">
